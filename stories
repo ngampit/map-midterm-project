@@ -1,0 +1,86 @@
+Option 1: Wiki Map
+A web app that allows users to collaboratively create maps which list multiple "points". For example: "Best Places to Eat Around Town" or "Locations of Movie Scenes".
+
+Requirements:
+users can see a list of the available maps
+users can view a map
+a map can contain many points
+each point can have: a title, description, and image
+authenticated users can create maps
+authenticated users can modify maps (add, edit, remove points)
+users can favourite a map
+users have profiles, indicating their favourite maps and maps they've contributed to
+use http://leafletjs.com/ or https://developers.google.com/maps/
+
+
+User Stories
+A user story describes how users will interact with your application
+They have the form: As a ___, I want to _, because ____.
+eg. As a user, I want to be able to save posts, because I want to review them later.
+User stories can also be negated: As a __, I shouldn't be able to _, because ___.
+eg. As a user, I shouldn't be able to edit other users posts, because I don't own those posts.
+
+As a user, I want to see what options I have for activities/services from a list of available maps, because I want to know what options are near me.
+
+Options:
+
+users can see a list of the available maps
+users can view a map
+a map can contain many points
+each point can have: a title, description, and image
+authenticated users can create maps
+authenticated users can modify maps (add, edit, remove points)
+users can favourite a map
+users have profiles, indicating their favourite maps and maps they've contributed to
+use http://leafletjs.com/ or https://developers.google.com/maps/
+
+As a user, I want to see what options I have for activities/services from a list of available maps, because I want to know what options are near me.
+As a user, I want to view a map, because I want to see the details of this map.
+As a user, I want to check the points, because I want more information
+As a user, I can view the title, image, description of each point of interest, because I want more details
+As a user, I want to create a map, because i want to customize and collaborate with others to create a personalized map
+As a user, I can create, edit, delete (modify) the maps I have created, because I want to change things
+As a user, I can favourite a map, because I want to find it easily
+As a user, I can have a profile that displays my favourite maps and maps I've contributed to, because I want see my records and have them viewable to others
+
+
+CREATE TABLE maps (
+  id SERIAL PRIMARY KEY
+  user_location
+  user_id
+)
+
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY
+  handle VARCHAR(255) //
+  password VARCHAR(255)
+  email VARCHAR(255)
+  registration_date TIMESTAMP
+
+
+)
+
+CREATE TABLE activities (
+  id SERIAL PRIMARY KEY
+
+
+)
+
+CREATE TABLE places (
+  id SERIAL PRIMARY KEY
+  title
+  image
+  description
+  map_id
+
+)
+
+CREATE TABLE map_types (
+  id SERIAL PRIMARY KEY
+
+)
+
+add created/updated columns
+look up postgress timestamp(col)
+use RESTED plugin USE FOR BACKEND TESTING
+che
