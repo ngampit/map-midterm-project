@@ -1,4 +1,6 @@
 
+module.exports = (pool) => {
+  const helper = {};
 
 const getAllMaps = function() {
   return pool.query(`SELECT maps.title as map_title, maps.center_lat, maps.center_long, maps.zoom, maps.created_at map_creation, maps.description as map_description, markers.title as marker_title, markers.lat, markers.long, markers.created_at as marker_creation, marker_icons.description as icon_description, markers.image
@@ -11,7 +13,7 @@ const getAllMaps = function() {
     return res.rows;
   })
 }
-exports.getAllMaps = getAllMaps;
+helper.getAllMaps = getAllMaps;
 
 const getFavouritesMaps = function(user_id) {
   const query = `SELECT maps.title as map_title, maps.center_lat, maps.center_long, maps.zoom, maps.created_at map_creation, maps.description as map_description, markers.title as marker_title, markers.lat, markers.long, markers.created_at as marker_creation, marker_icons.description as icon_description, markers.image
@@ -29,7 +31,7 @@ const getFavouritesMaps = function(user_id) {
   })
 
 }
-exports.getFavouritesMaps = getFavouritesMaps;
+helper.getFavouritesMaps = getFavouritesMaps;
 
 
 const checkUserByEmail = function(email) {
@@ -41,7 +43,7 @@ const checkUserByEmail = function(email) {
     return res.rows[0];
   })
 }
-exports.checkUserByEmail = checkUserByEmail;
+helper.checkUserByEmail = checkUserByEmail;
 
 
 
@@ -59,7 +61,7 @@ const createNewMap = function(data) {
     return res.rows[0];
   })
 }
-exports.createNewMap = createNewMap;
+helper.createNewMap = createNewMap;
 
 
 const deleteMap = function(map_id) {
@@ -67,7 +69,7 @@ const deleteMap = function(map_id) {
 
   return pool.query(query, [map_id])
 }
-exports.deleteMap = deleteMap;
+helper.deleteMap = deleteMap;
 
 
 const getMapByID = function(map_id) {
@@ -79,7 +81,7 @@ const getMapByID = function(map_id) {
     return res.rows[0];
   })
 }
-exports.getMapByID = getMapByID;
+helper.getMapByID = getMapByID;
 
 
 const addMarker = function(data) {
@@ -97,7 +99,7 @@ const addMarker = function(data) {
     return res.rows[0];
   })
 }
-exports.addMarker = addMarker;
+helper.addMarker = addMarker;
 
 
 
@@ -106,7 +108,7 @@ const deleteMarker = function(marker_id) {
 
   return pool.query(query, [marker_id])
 }
-exports.deleteMarker = deleteMarker;
+helper.deleteMarker = deleteMarker;
 
 
 const markFavourite = function(map_id, user_id) {
@@ -117,7 +119,7 @@ const markFavourite = function(map_id, user_id) {
     return res.rows[0];
   })
 }
-exports.markFavourite = markFavourite;
+helper.markFavourite = markFavourite;
 
 const unmarkFavourite = function(map_id, user_id) {
   query = `DELETE FROM fav_user_maps (map_id, user_id) VALUES ($1, $2);`;
@@ -127,4 +129,7 @@ const unmarkFavourite = function(map_id, user_id) {
     return res.rows[0];
   })
 }
-exports.unmarkFavourite = unmarkFavourite;
+helper.unmarkFavourite = unmarkFavourite;
+
+return helper;
+}

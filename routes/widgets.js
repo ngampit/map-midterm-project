@@ -10,7 +10,7 @@ const router  = express.Router();
 
 
 
-module.exports = (db) => {
+module.exports = (helper) => {
   // router.get("/", (req, res) => {
   //   let query = `SELECT * FROM widgets`;
   //   console.log(query);
@@ -26,26 +26,133 @@ module.exports = (db) => {
   //     });
   // });
 
-   router.get("/", (req, res) => {
-    let query = `SELECT * FROM markers limit 5`;
-    db.query(query)
-      .then(data => {
-        const widgets = data.rows;
-        const vancouver = {
-                          lat : data.rows[0].center_lat,
-                          lng : data.rows[0].center_lat
-                          }
-        res.json({widgets});
-      })
+
+   router.post("/:map_id", (req, res) => {
+    const data = { user_id : req.session,
+                   title : "title",
+                   center_lat: 13.7563,
+                   center_long:100.5018,
+                   description: "test Description"
+                  }
+    helper.createNewMap(data)
+    .then((data) => {
+      const tempVars = {
+         lat : center_lat,
+         lng : center_long
+      }
+      res.render('map', tempVars)})
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
+
+  })
+
+   router.post("delete/:map_id", (req, res) => {
+      const mapId = req.params;
+      helper.deleteMap(mapId)
+      .then(res.send("delete done"))
       .catch(err => {
         res
           .status(500)
           .json({ error: err.message });
-      });
-  });
-  return router;
+   })
 
-}
+  })
+
+   router.post("/edit/:map_id", (req, res) => {
+      const mapId = req.params;
+      helper.getMapByID(mapId)
+      .then(data => {
+        const tempVars = {
+          lat : center_lat,
+          lng : center_long
+        }
+      res.render('map', tempVars)})
+      .catch(err => {
+        res
+           .status(500)
+           .json({ error: err.message });
+   });
+
+   })
+
+
+// this one will be in frontend on Ajax
+   router.post("/:map_id/create/: markerId", (req, res) => {
+    const data = {
+      map_id : req.params.map_id,
+      user_id : req.session,
+      title : "title",
+      center_lat: 13.7563,
+      center_long:100.5018,
+      description: "test Description"
+     }
+    helper.addMarker(mapId)
+
+    .then(data => {
+      const tempVars = {
+        lat : center_lat,
+        lng : center_long
+      }
+    res.render('map', tempVars)})
+    .catch(err => {
+      res
+         .status(500)
+         .json({ error: err.message });
+ });
+
+ })
+
+
+ router.post("/:map_id/delete/:markerId", (req, res) => {
+  const marker_id = req.params.markerId;
+  helper.deleteMarker(maker_id)
+  .then(res.send('maker deleted'))
+  .catch(err => {
+    res
+       .status(500)
+       .json({ error: err.message });
+});
+
+})
+
+// edit marker func pending !!!!
+
+
+
+// favorite marker
+router.post("/:map_id/favorite", (req, res) => {
+  const map_id = req.params;
+  const user_id = req.session;
+  helper.markFavourite(map_id, user_id)
+  .then(res.send('maker favorite'))
+  .catch(err => {
+    res
+       .status(500)
+       .json({ error: err.message });
+});
+
+})
+
+
+
+router.post("/:map_id/unfavorite", (req, res) => {
+  const map_id = req.params;
+  const user_id = req.session;
+  helper.unmarkFavourite(map_id, user_id)
+  .then(res.send('unfavorite marker'))
+  .catch(err => {
+    res
+       .status(500)
+       .json({ error: err.message });
+});
+
+})
+
+
+
 
 
 
@@ -89,3 +196,5 @@ module.exports = (db) => {
 
   // }
 
+  return router;
+}
