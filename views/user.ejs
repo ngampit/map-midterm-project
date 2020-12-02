@@ -63,7 +63,7 @@
         <form>
           <div class="form-group">
             <label for="exampleFormControlInput1">Map Name</label>
-            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter map name here">
           </div>
           <div class="form-group">
             <label for="exampleFormControlTextarea1">Enter a map description</label>
@@ -74,7 +74,7 @@
       </div>
     </section>
 
-    <section>
+    <section style="background-color: #BABABA;">
       <h1 class="user-section-heading">My Maps</h1>
       <div class="row my-maps">
         <div class="card" style="width: 18rem;">
@@ -83,11 +83,25 @@
             <h5 class="card-title">Card title</h5>
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
               content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <form method="GET" action="">
+              <button name="get" type="button" value="delete" class="btn btn-outline-primary">
+                Go
+              </button>
+            </form>
+            <form method="POST" action="">
+              <button name="submit" type="submit" value="submit" class="btn btn-outline-success">
+                Edit
+              </button>
+            </form>
+            <form method="POST" action="">
+              <button name="Delete" type="delete" value="delete" class="btn btn-outline-danger">
+                Delete
+              </button>
+            </form>
           </div>
         </div>
         <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="..." alt="Card image cap">
+          <img class="card-img-top" src="" alt="Card image cap">
           <div class="card-body">
             <h5 class="card-title">Card title</h5>
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
@@ -106,8 +120,8 @@
       </div>
     </section>
 
-    <section>
-      <h1>Other User Maps</h1>
+    <section style="background-color: #AEBAB1;">
+      <h1 class="user-section-heading">Other User Maps</h1>
       <div class="row my-maps">
         <div class="card" style="width: 18rem;">
           <img class="card-img-top" src="..." alt="Card image cap">
@@ -115,7 +129,16 @@
             <h5 class="card-title">Card title</h5>
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
               content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <form method="GET" action="">
+              <button name="get" type="button" value="delete" class="btn btn-outline-primary">
+                Go
+              </button>
+            </form>
+            <form method="POST" action="">
+              <button name="submit" type="submit" value="submit" class="btn btn-outline-warning">
+                Favourite
+              </button>
+            </form>
           </div>
         </div>
         <div class="card" style="width: 18rem;">
@@ -137,8 +160,8 @@
         </div>
       </div>
     </section>
-    <section>
-      <h1>Favourited Maps</h1>
+    <section style="background-color: #BABABA;">
+      <h1 class="user-section-heading">Favourited Maps</h1>
       <div class="row my-maps">
         <div class="card" style="width: 18rem;">
           <img class="card-img-top" src="..." alt="Card image cap">
@@ -146,7 +169,16 @@
             <h5 class="card-title">Card title</h5>
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
               content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <form method="GET" action="">
+              <button name="get" type="button" value="delete" class="btn btn-outline-primary">
+                Go
+              </button>
+            </form>
+            <form method="POST" action="">
+              <button name="submit" type="submit" value="submit" class="btn btn-outline-warning">
+                Favourite
+              </button>
+            </form>
           </div>
         </div>
         <div class="card" style="width: 18rem;">
@@ -168,8 +200,8 @@
         </div>
       </div>
     </section>
-    <section>
-      <h1>Contributions</h1>
+    <section style="background-color: #AEBAB1;">
+      <h1 class="user-section-heading">Contributions</h1>
       <div class="row my-maps">
         <div class="card" style="width: 18rem;">
           <img class="card-img-top" src="..." alt="Card image cap">
@@ -177,7 +209,16 @@
             <h5 class="card-title">Card title</h5>
             <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
               content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+            <form method="GET" action="">
+              <button name="get" type="button" value="get" class="btn btn-outline-primary">
+                Go
+              </button>
+            </form>
+            <form method="POST" action="">
+              <button name="submit" type="submit" value="submit" class="btn btn-outline-warning">
+                Favourite
+              </button>
+            </form>
           </div>
         </div>
         <div class="card" style="width: 18rem;">
@@ -201,7 +242,8 @@
     </section>
   </main>
 
-
+  <footer>
+  </footer>
 
 
 </body>
