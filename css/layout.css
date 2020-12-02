@@ -39,23 +39,32 @@ nav {
   padding: 5%;
 }
 
-#sidebar {
-  background-color: #13617C;
+#map {
+  height: 800px;
+  /* The height is 400 pixels */
+  width: 100%;
+  /* The width is the width of the web page */
 }
 
-#button {
-  text-align: center;
+#sidebar {
+  background-color: #EEE;
+}
+
+.button {
+  display: inline;
 }
 
 .my-maps {
   -webkit-box-pack: space-evenly;
       -ms-flex-pack: space-evenly;
           justify-content: space-evenly;
+  padding-top: 2em;
+  padding-bottom: 2em;
 }
 
 .user-section-heading {
-  -webkit-text-emphasis: center;
-          text-emphasis: center;
+  text-align: center;
+  padding-top: 1em;
 }
 
 main {
@@ -65,4 +74,8 @@ main {
 .center {
   display: block;
   margin: auto;
+}
+
+footer {
+  height: 100px;
 }
