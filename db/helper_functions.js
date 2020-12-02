@@ -102,7 +102,7 @@ exports.addMarker = addMarker;
 
 
 const deleteMarker = function(marker_id) {
-  query = `DELETE FROM markers WHERE map_id = $1`;
+  query = `DELETE FROM markers WHERE id = $1`;
 
   return pool.query(query, [marker_id])
 }
@@ -123,8 +123,5 @@ const unmarkFavourite = function(map_id, user_id) {
   query = `DELETE FROM fav_user_maps (map_id, user_id) VALUES ($1, $2);`;
 
   return pool.query(query, [map_id, user_id])
-  .then((res) => {
-    return res.rows[0];
-  })
 }
 exports.unmarkFavourite = unmarkFavourite;

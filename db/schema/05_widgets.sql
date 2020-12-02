@@ -1,5 +1,6 @@
 -- Drop and recreate Widgets table (Example)
 
+DROP TABLE IF EXISTS fav_user_maps CASCADE;
 DROP TABLE IF EXISTS maps CASCADE;
 DROP TABLE IF EXISTS markers CASCADE;
 DROP TABLE IF EXISTS marker_icons CASCADE;
