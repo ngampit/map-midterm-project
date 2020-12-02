@@ -10,12 +10,17 @@ CREATE TABLE maps (
   title VARCHAR(255) NOT NULL,
   center_lat DECIMAL(17, 15) NOT NULL,
   center_long DECIMAL(18, 15) NOT NULL,
-  is_private BOOLEAN NOT NULL DEFAULT TRUE,
   zoom INTEGER NOT NULL DEFAULT 12,
   search_keyword VARCHAR(255),
   created_at TIMESTAMP,
   updated_at TIMESTAMP,
   description TEXT
+);
+
+CREATE TABLE fav_user_maps (
+  id SERIAL PRIMARY KEY NOT NULL,
+  map_id INTEGER REFERENCES maps(id),
+  user_id INTEGER REFERENCES users(id)
 );
 
 CREATE TABLE marker_icons (
@@ -26,8 +31,8 @@ CREATE TABLE marker_icons (
 
 CREATE TABLE markers (
   id SERIAL PRIMARY KEY NOT NULL,
-  user_id INTEGER REFERENCES users(id),
   map_id INTEGER REFERENCES maps(id),
+  user_id INTEGER REFERENCES users(id),
   title VARCHAR(255) NOT NULL,
   lat DECIMAL(17, 15) NOT NULL,
   long DECIMAL(18, 15) NOT NULL,
