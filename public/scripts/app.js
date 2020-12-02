@@ -49,7 +49,7 @@ $(() => {
 //       handleLocationError(false, infoWindow, map.getCenter());
 //     }
 // //  });
-}
+//}
 
 
 

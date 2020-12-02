@@ -11,28 +11,12 @@ const router  = express.Router();
 
 
 module.exports = (db) => {
-  router.get("/", (req, res) => {
-    let query = `SELECT * FROM widgets`;
-    console.log(query);
-    db.query(query)
-      .then(data => {
-        const widgets = data.rows;
-        res.json({ widgets });
-      })
-      .catch(err => {
-        res
-          .status(500)
-          .json({ error: err.message });
-      });
-  });
-
-  //  router.get("/", (req, res) => {
+  // router.get("/", (req, res) => {
   //   let query = `SELECT * FROM widgets`;
   //   console.log(query);
   //   db.query(query)
   //     .then(data => {
   //       const widgets = data.rows;
-  //       templateVals = { widgets }
   //       res.json({ widgets });
   //     })
   //     .catch(err => {
@@ -42,14 +26,28 @@ module.exports = (db) => {
   //     });
   // });
 
-
-
-
-
-
-
+   router.get("/", (req, res) => {
+    let query = `SELECT * FROM markers limit 5`;
+    db.query(query)
+      .then(data => {
+        const widgets = data.rows;
+        const vancouver = {
+                          lat : data.rows[0].center_lat,
+                          lng : data.rows[0].center_lat
+                          }
+        res.json({widgets});
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
   return router;
-};
+
+}
+
+
 
 //module.exports = (db) => {
   // delete point on map
