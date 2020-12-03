@@ -83,6 +83,7 @@ app.get("/", (req, res) => {
       const tempVars = {
          lat: data.center_lat,
          lng: data.center_long
+
       }
       res.render('index', tempVars)
     })
@@ -93,12 +94,20 @@ app.get("/", (req, res) => {
     });
   }
   return helper.getFavouritesMaps(id)
-  .then((data)=>{
+  .then((favouriteMaps)=>{
+
+
+
     const tempVars = {
-      lat: data.center_lat,
-      lng: data.center_long
+      favouriteMaps
+
    }
-   return res.render('user', tempVars)
+   helper.getAllMaps()
+   .then((allMaps) => {
+    tempVars["allMaps"] = allMaps
+    return res.render('user', tempVars)
+   })
+
   }).catch(err => {
     return res
       .status(500)
@@ -139,30 +148,13 @@ app.post("/login", (req, res) => {
       });
 });
 
-<<<<<<< Updated upstream
 app.post("/logout", (req,res) => {
   req.session = null;
   res.redirect('/')
 })
 
 
-=======
-app.get("/user", (req, res) => {
-  res.render("user");
-});
-
-// login page
-app.get("/login" , (req, res) => {
-  // if (req.session.userID) {
-  //   // res.redirect('/maps')
-  // }
-  res.render('login');
-});
->>>>>>> Stashed changes
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
-
-
-
