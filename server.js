@@ -124,12 +124,26 @@ app.post("/login", (req, res) => {
       });
 });
 
+<<<<<<< Updated upstream
 app.post("/logout", (req,res) => {
   req.session = null;
   res.redirect('/')
 })
 
 
+=======
+app.get("/user", (req, res) => {
+  res.render("user");
+});
+
+// login page
+app.get("/login" , (req, res) => {
+  // if (req.session.userID) {
+  //   // res.redirect('/maps')
+  // }
+  res.render('login');
+});
+>>>>>>> Stashed changes
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
