@@ -48,40 +48,40 @@ nav {
 
 
 
-// map.ejs styles
+// Map page styles -------------------------------------------------------------------
 
-#sidebar {
-  background-color: #13617C;
-
-
+#map {
+  height: 800px;
+  /* The height is 400 pixels */
+  width: 100%;
+  /* The width is the width of the web page */
 }
 
-// collapsible div
 
-
-
-
-
-
-
+#sidebar {
+  background-color: #EEE;
+}
 
 
 
 // Button styling
-#button {
-  text-align: center;
+.button {
+  display: inline;
 }
 
 
 
-// User Page
+// User Page ---------------------------------------------------------------
 
 .my-maps {
   justify-content: space-evenly;
+  padding-top: 2em;
+  padding-bottom: 2em;
 }
 
-.user-section-heading { // styles section headers in users pages
-  text-emphasis: center;
+.user-section-heading { // styles section headers in users pages3
+  text-align: center;
+  padding-top: 1em;
 }
 
 main {
@@ -92,3 +92,8 @@ main {
   display: block;
   margin: auto;
 }
+
+footer {
+  height: 100px;
+}
+

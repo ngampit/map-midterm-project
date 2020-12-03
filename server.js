@@ -101,8 +101,10 @@ app.get("/login", (req, res) => {
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
+  console.log(email);
+  console.log(password);
 
-  return checkUserByEmail(email)
+  return helper.checkUserByEmail(email)
 
     .then(data => {
       if (data.length === 0) {
@@ -111,6 +113,7 @@ app.post("/login", (req, res) => {
       if (password !== data.password) {
         res.send("Password wrong");
       }
+      const user_id = data.id;
       const UserID = req.session.user_id
       res.redirect('/')
       })
