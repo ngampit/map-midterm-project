@@ -26,21 +26,17 @@ module.exports = (helper) => {
   //     });
   // });
 
-
-   router.post("/:map_id", (req, res) => {
+   router.post("/", (req, res) => {
     const data = { user_id : req.session,
-                   title : "title",
-                   center_lat: 13.7563,
-                   center_long:100.5018,
-                   description: "test Description"
+                   title : req.body.title,
+                   center_lat:  43.70011,
+                   center_long: -79.4163,
+                   description: req.body.description
                   }
     return helper.createNewMap(data)
     .then((data) => {
-      const tempVars = {
-         lat : center_lat,
-         lng : center_long
-      }
-      res.render('map', tempVars)
+      // res.render('map', tempVars)
+      res.redirect(`/api/widgets/${data.id}`);
     }).catch(err => {
       res
         .status(500)
@@ -48,6 +44,18 @@ module.exports = (helper) => {
     });
 
     })
+
+    // router.get("/:map_id", (req, res) => {
+    //   return helper.getMapById()
+    //   .then (data => {
+    //     const tempVars = {
+    //       lat : data.center_lat,
+    //       lng : data.center_long
+    //    }
+    //    res.render("map", tempVars)
+    //   })
+
+    // });
 
 
 
