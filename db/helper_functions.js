@@ -35,9 +35,8 @@ helper.getFavouritesMaps = getFavouritesMaps;
 
 
 const checkUserByEmail = function(email) {
-  const query = `SELECT * FROM users
-                 WHERE email = $1
-                `
+  const query = `SELECT * FROM users WHERE email = $1`;
+
   return pool.query(query, [email])
   .then((res) =>{
     return res.rows[0];
@@ -74,7 +73,7 @@ helper.deleteMap = deleteMap;
 
 const getMapByID = function(map_id) {
   query = `SELECT * FROM maps
-           WHERE map_id = $1 `
+           WHERE id = $1 `
 
   return pool.query(query, [map_id])
   .then((res) => {

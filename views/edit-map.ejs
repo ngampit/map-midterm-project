@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Edit a Map</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/map-edit-layout.css" type="text/css" />
+    <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Sigmar+One" rel="stylesheet">
+
+
+    <!-- Imports Leaflet Stylesheet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+   integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+   crossorigin=""/>
+
+   <!-- Imports Leaflet JS -->
+   <!-- THIS MUST BE PLACED BEFORE APP.JS AND AFTER THE LEAFLET STYLESHEET -->
+    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+   integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+   crossorigin=""></script>
+
+   <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+   <script src="/scripts/favorite.js"></script>
+   <script type="text/javascript" src="/scripts/index.js"></script>
+
+  </head>
+
+  <body>
+    <header>
+      <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="/">WIKIMAPS</a>
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="/maps/new">New Map</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/maps">Back to List</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/maps/<%= mapID.id %>">Back to View</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/logout">Logout</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <div id="map-info" class="d-flex justify-content-center">
+      <ul class="list-group">
+          <li class="list-group-item">
+              <p class="title"><%= mapData.map_name%></p>
+              <p class="description"><%= mapData.map_description%></p>
+            </a>
+          </li>
+      </ul>
+    </div>
+
+    <div class="modal">
+      <div class="modal-content">
+        <p></p>
+        <form class="modal-input">
+          <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" class="form-control" id="title" placeholder="Enter your new title here...">
+          </div>
+          <div class="form-group">
+            <label for="content">Description:</label>
+            <textarea class="form-control" id="content" placeholder="Enter your new text here..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="image">Image:</label>
+            <input type="text" class="form-control" id="image" placeholder="Enter your new image url here...">
+          </div>
+          <div class="form-group">
+            <button type="button" class="close-modal">✖</button>
+            <button type="button" class="update-marker">Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="mapid">
+    <script>
+
+      var map = L.map('mapid').setView([0, 0], 2);
+      var markers = new L.featureGroup().addTo(map);
+      var markerData = {};
+
+      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
+      {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox.streets',
+        accessToken: 'pk.eyJ1IjoibG91aXNyaWVobCIsImEiOiJjam5kZjFzMTgyNjRqM3FvZXl4Y3ZyMXNuIn0.yLWkT311ioY116MNtVmy0A'
+      }).addTo(map);
+
+      var mapInfo = <%- JSON.stringify(mapArray)%>;
+
+      for(var loop = 0; loop < mapInfo.length; loop++) {
+        var title = mapInfo[loop].title;
+        var image = mapInfo[loop].image_url;
+        var coordinates = mapInfo[loop].coords;
+        var content = mapInfo[loop].content;
+        var marker = L.marker(coordinates, {title: 'marker', riseOnHover: true, draggable: true})
+          .addTo(map)
+          .on('dragend', updateCoords);
+        marker
+          .bindPopup('<b><p>' + title+ '<br></b>' + content + '</p><br><img src="' + image + '"><br><button type="button" class="delete" id="' + marker._leaflet_id + '">Delete</button>'
+            + '<button type="button" class="edit" id="' + marker._leaflet_id + '">Edit</button>');
+        markers.addLayer(marker);
+        markerData[marker._leaflet_id] = {
+            title: title,
+            image: image,
+            content: content,
+            coords: coordinates
+          };
+      }
+
+      if (mapInfo.length !== 0) {
+        var newBounds = markers.getBounds();
+        map.fitBounds(newBounds, {padding: [50,50]});
+      }
+
+      //Remove a marker
+      $("body").on("click", ".delete", function() {
+        var markerToDeleteID = parseInt($(this).attr('id'), 10);
+        map.eachLayer(function (layer) {
+          if (layer.options.title === 'marker' && layer._leaflet_id === markerToDeleteID) {
+              map.removeLayer(layer);
+              markers.removeLayer(layer);
+          }
+        });
+        delete markerData[markerToDeleteID];
+      });
+
+      $("body").on("click", ".edit", function() {
+        var markerToEditID = parseInt($(this).attr('id'), 10);
+        console.log(markerData[markerToEditID].title);
+        console.log(markerData[markerToEditID].content);
+        console.log(markerData[markerToEditID].image);
+        $('.modal').data('marker_id', markerToEditID).show();
+        $('.modal #title').attr("value", markerData[markerToEditID].title);
+        $('.modal #content').text(markerData[markerToEditID].content);
+        $('.modal #image').attr("value", markerData[markerToEditID].image);
+        map.closePopup();
+      });
+
+      $("body").on("click", ".update-marker", function() {
+        var newContent = htmlWiper($('.modal #content').val(), "content");
+        var newTitle = htmlWiper($('.modal #title').val(), "title");
+        var newImage = htmlWiper($('.modal #image').val(), "image");
+        var updateMarkerID = $('.modal').data('marker_id');
+        markerData[updateMarkerID].content = newContent;
+        markerData[updateMarkerID].title = newTitle;
+        markerData[updateMarkerID].image = newImage;
+        console.log("markers object:");
+        console.log(markers);
+        markers.eachLayer(function (layer) {
+          console.log("current layer:");
+          console.log(layer);
+          if (layer._leaflet_id === $('.modal').data('marker_id')) {
+            layer._popup._content = '<b><p>' + newTitle+ '</b><br>' + newContent + '</p><br><img src="' + newImage + '"><br><button type="button" class="delete" id="' + layer._leaflet_id + '">Delete</button>'
+            + '<button type="button" class="edit" id="' + layer._leaflet_id + '">Edit</button>';
+          }
+        });
+        $('.modal').hide();
+      });
+
+      $("body").on("click", ".close-modal", function() {
+        $('.modal').hide();
+      });
+
+      // Create a marker on map click
+      function onMapClick(event) {
+        var coords = [event.latlng.lat, event.latlng.lng];
+        var newMarker = L.marker(coords, {title: 'marker', riseOnHover: true, draggable: true})
+          .addTo(map)
+          .on('dragend', updateCoords);
+        var bounds = new L.latLngBounds();
+        newMarker
+          .bindPopup('<p><b>New Marker</b><br>Tell us about this place!</p><br><button type="button" class="delete" id="' + newMarker._leaflet_id + '">Delete</button>' +
+            '<button type="button" class="edit" id="' + newMarker._leaflet_id + '">Edit</button>')
+          .openPopup();
+        markers.addLayer(newMarker);
+        markerData[newMarker._leaflet_id]=
+          {
+            title: "New Marker",
+            image: "",
+            content: "Tell us about this place!",
+            coords: coords
+          };
+      }
+
+      function htmlWiper(content, type) {
+        if (!content) {
+          if ( type === "content") {
+            return "Tell us about this place!";
+          } else if ( type === "title") {
+            return "New Marker";
+          } else if ( type === "image") {
+            return;
+          }
+        }
+        var cleanedContent = content.replace(/\<(.*?)\>/g, "")
+          .replace(/Edit/g, "")
+          .replace(/Delete/g, "");
+        return cleanedContent;
+      }
+
+      function updateCoords (event) {
+        var markerDragID = event.target._leaflet_id;
+        var dragCoords = [event.target._latlng.lat, event.target._latlng.lng];
+        markerData[markerDragID].coords = dragCoords;
+      }
+
+      map.on('click', onMapClick);
+
+3r2
+
+    </script>
+  </div>
+
+    <div id="finish" class="row justify-content-center">
+      <button type="button" class="btn btn-outline-primary">Finish Editing</button>
+    </div>
+
+    <div id="finish-confirm" class="alert alert-success col-6">
+      <strong>The map has been updated!</strong>
+    </div>
+
+  </body>
+</html>
+

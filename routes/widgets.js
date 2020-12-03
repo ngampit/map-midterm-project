@@ -34,24 +34,26 @@ module.exports = (helper) => {
                    center_long:100.5018,
                    description: "test Description"
                   }
-    helper.createNewMap(data)
+    return helper.createNewMap(data)
     .then((data) => {
       const tempVars = {
          lat : center_lat,
          lng : center_long
       }
-      res.render('map', tempVars)})
-    .catch(err => {
+      res.render('map', tempVars)
+    }).catch(err => {
       res
         .status(500)
         .json({ error: err.message });
     });
 
-  })
+    })
+
+
 
    router.post("delete/:map_id", (req, res) => {
       const mapId = req.params;
-      helper.deleteMap(mapId)
+      return helper.deleteMap(mapId)
       .then(res.send("delete done"))
       .catch(err => {
         res
@@ -59,24 +61,24 @@ module.exports = (helper) => {
           .json({ error: err.message });
    })
 
-  })
+   })
 
    router.post("/edit/:map_id", (req, res) => {
       const mapId = req.params;
-      helper.getMapByID(mapId)
+      return helper.getMapByID(mapId)
       .then(data => {
         const tempVars = {
           lat : center_lat,
           lng : center_long
         }
-      res.render('map', tempVars)})
-      .catch(err => {
+      res.render('map', tempVars)
+      }).catch(err => {
         res
            .status(500)
            .json({ error: err.message });
-   });
-
+      });
    })
+
 
 
 // this one will be in frontend on Ajax
@@ -89,21 +91,23 @@ module.exports = (helper) => {
       center_long:100.5018,
       description: "test Description"
      }
-    helper.addMarker(mapId)
+    return helper.addMarker(mapId)
 
     .then(data => {
       const tempVars = {
         lat : center_lat,
         lng : center_long
       }
-    res.render('map', tempVars)})
-    .catch(err => {
+    res.render('map', tempVars)
+    }).catch(err => {
       res
          .status(500)
          .json({ error: err.message });
- });
+    });
 
- })
+  })
+
+
 
 
  router.post("/:map_id/delete/:markerId", (req, res) => {
@@ -114,9 +118,32 @@ module.exports = (helper) => {
     res
        .status(500)
        .json({ error: err.message });
-});
+  });
 
 })
+
+
+router.get("/:map_id", (req, res) => {
+  const map_id = req.params.map_id;
+  console.log("line 127", map_id)
+  return helper.getMapByID(map_id)
+  .then((data) => {
+    console.log("line 130", data);
+    const tempVars = {
+       lat : data.center_lat,
+       lng : data.center_long
+    }
+//    res.send(tempVars);
+//    console.log(tempVars);
+    res.render('map', tempVars)
+  }).catch(err => {
+    res
+      .status(500)
+      .json({ error: err.message });
+  });
+
+  })
+
 
 // edit marker func pending !!!!
 
@@ -132,9 +159,9 @@ router.post("/:map_id/favorite", (req, res) => {
     res
        .status(500)
        .json({ error: err.message });
-});
+  });
+  })
 
-})
 
 
 
@@ -147,54 +174,9 @@ router.post("/:map_id/unfavorite", (req, res) => {
     res
        .status(500)
        .json({ error: err.message });
-});
+  });
+  });
 
-})
-
-
-
-
-
-
-//module.exports = (db) => {
-  // delete point on map
-
-  // router.post("/:map_id/point/:id", (req,res) => {
-  //   let map_id = req.params.map_id;
-  //   let pointId = req.params.id;
-  //   db.deletePointInMap(pointId, (results) => {
-  //     console.log(results);
-  //   })
-  //   res.redirect("/");
-  // })
-//}
-
-
-  // //get current map by not login user
-  // router.get("/", (req,res)=>{
-  //   // not login client
-  //   render login page
-  //   res.send or res.redirect
-  // })
-
-  // // get all maps by users
-  // router.get("/:id", (req,res)=>{
-  //   db.getAllMapByUser
-  //   res.send or res.redirect
-  // })
-
-  // // creat map
-  // router.post("/create", (req,res)+>{
-  //   db.addMap
-  //   res.send or res.redirect
-  // })
-
-  // // delete map
-  // router.post("/delete/:id", (req,res) =>{
-  //   db.deleteSingleMap
-  //   res.send or res.redirect
-
-  // }
 
   return router;
 }
