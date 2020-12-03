@@ -9,6 +9,8 @@ const bodyParser = require("body-parser");
 const sass       = require("node-sass-middleware");
 const app        = express();
 const morgan     = require('morgan');
+const cookieSession = require('cookie-session');
+
 
 
 // PG database client/connection setup
@@ -22,10 +24,19 @@ db.connect();
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
 //         The :status token will be colored red for server error codes, yellow for client error codes, cyan for redirection codes, and uncolored for all other codes.
+
+
+
+
 app.use(morgan('dev'));
 
+
+
 app.set("view engine", "ejs");
+
+
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use("/styles", sass({
   src: __dirname + "/styles",
   dest: __dirname + "/public/styles",
@@ -56,9 +67,16 @@ app.use("/api/widgets", widgetsRoutes(helper));
 //   res.render("index");
 // });
 
+app.use(cookieSession({
+  name: 'session',
+  keys: ['secret']
+}));
+
 
 app.get("/", (req, res) => {
-  const id = req.session;
+  const id = req.session && req.session.user_id?req.session.user_id:-1;
+
+//  console.log(req);
   if(!id) {
     helper.getAllMaps()
     .then((data)=> {
@@ -69,7 +87,7 @@ app.get("/", (req, res) => {
       res.render('index', tempVars)
     })
     .catch(err => {
-      res
+      return res
         .status(500)
         .json({ error: err.message });
     });
@@ -80,17 +98,15 @@ app.get("/", (req, res) => {
       lat: data.center_lat,
       lng: data.center_long
    }
-   res.render('index', tempVars)
-  .catch(err => {
-    res
+   return res.render('user', tempVars)
+  }).catch(err => {
+    return res
       .status(500)
       .json({ error: err.message });
   });
   })
 
 
-  //res.json({ users });
-});
 
 app.get("/login", (req, res) => {
   res.render('login');
@@ -113,8 +129,7 @@ app.post("/login", (req, res) => {
       if (password !== data.password) {
         res.send("Password wrong");
       }
-      const user_id = data.id;
-      const UserID = req.session.user_id
+      req.session.user_id = data.id;
       res.redirect('/')
       })
       .catch(err => {

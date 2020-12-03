@@ -35,11 +35,11 @@ helper.getFavouritesMaps = getFavouritesMaps;
 
 
 const checkUserByEmail = function(email) {
-  const query = `SELECT * FROM users
-                 WHERE email = $1
-                `
+  const query = `SELECT * FROM users WHERE email = $1`;
+
   return pool.query(query, [email])
   .then((res) =>{
+    console.log(res);
     return res.rows[0];
   })
 }
