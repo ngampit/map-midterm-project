@@ -1,14 +1,4 @@
 <!DOCTYPE html>
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-<html>
-  <head>
-    <title>Add Map</title>
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjwvQUlvnSLtKZlbDFKbFZoj2IriOF_XY&callback=initMap&libraries=&v=weekly"
-      defer
-    ></script>
-=======
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -35,12 +25,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;900&display=swap" rel="stylesheet">
   <!-- Font Awesome -->
   <script src="https://kit.fontawesome.com/fd87467771.js" crossorigin="anonymous"></script>
->>>>>>> ad8fbbdd0159806b6cff6cf9c03a0d4ae0921031
     <style type="text/css">
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 100%;
+        height: 400px;
       }
       /* Optional: Makes the sample page fill the window. */
       html,
@@ -51,6 +40,7 @@
       }
     </style>
     <script>
+      let markers = [];
       let map;
       let latitude = <%=lat%>;
       let longitude = <%=lng%>;
@@ -59,107 +49,28 @@
           center: { lat: latitude, lng: longitude },
           zoom: 8,
         });
+         // This event listener will call addMarker() when the map is clicked.
+         map.addListener("click", (event) => {
+          console.log(event.latLng.lat())
+          console.log(event.latLng.lng())
+          addMarker(event.latLng);
+
+        });
+      }
+            // Adds a marker to the map and push to the array.
+            function addMarker(location) {
+        const marker = new google.maps.Marker({
+          position: location,
+          map: map,
+        });
+        markers.push(marker);
+        // console.log(markers)
       }
     </script>
   </head>
   <body>
     <div id="map"></div>
-  </body>
-=======
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <!-- Bootstrap -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
-  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
-  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
-  <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
-
-  <!-- Scripts -->
-  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
-  <script type="text/javascript" src="/scripts/app.js"></script>
-  <script defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjwvQUlvnSLtKZlbDFKbFZoj2IriOF_XY&callback=initMap">
-  </script>
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-  </script>
-  <title>Wiki Map</title>
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;900&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome -->
-  <script src="https://kit.fontawesome.com/fd87467771.js" crossorigin="anonymous"></script>
-
-  <script>
-    // Initialize and add the map
-    function initMap() {
-      // The location of Uluru
-      const uluru = {
-        lat: -25.344,
-        lng: 131.036
-      };
-      // The map, centered at Uluru
-      const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 4,
-        center: uluru,
-      });
-      // The marker, positioned at Uluru
-      const marker = new google.maps.Marker({
-        position: uluru,
-        map: map,
-      });
-    }
-
-  </script>
-</head>
-
-<body>
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Mapper</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">example1</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">example2</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </header>
-
-  <div class="row">
-    <div class="col-lg-3" id="sidebar">
-      <button>
-
-      </button>
-
+    <div>
     </div>
-
-    <div class="col-lg-9" id="map"></div>
-  </div>
-
-
-
-
-</body>
-
->>>>>>> Stashed changes
+  </body>
 </html>
