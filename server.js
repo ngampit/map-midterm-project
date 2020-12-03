@@ -78,7 +78,7 @@ app.get("/", (req, res) => {
 
 //  console.log(req);
   if(!id) {
-    helper.getAllMaps()
+     return helper.getAllMaps()
     .then((data)=> {
       const tempVars = {
          lat: data.center_lat,
@@ -92,7 +92,7 @@ app.get("/", (req, res) => {
         .json({ error: err.message });
     });
   }
-  helper.getFavouritesMaps(id)
+  return helper.getFavouritesMaps(id)
   .then((data)=>{
     const tempVars = {
       lat: data.center_lat,

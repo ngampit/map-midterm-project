@@ -1,68 +1,57 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Add Map</title>
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjwvQUlvnSLtKZlbDFKbFZoj2IriOF_XY&callback=initMap&libraries=&v=weekly"
-      defer
-    ></script>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+  <!-- Scripts -->
+  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+  <script type="text/javascript" src="/scripts/app.js"></script>
+  <script defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjwvQUlvnSLtKZlbDFKbFZoj2IriOF_XY&callback=initMap">
+  </script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+  </script>
+  <title>Wiki Map</title>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;900&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/fd87467771.js" crossorigin="anonymous"></script>
     <style type="text/css">
-      /* Set the size of the div element that contains the map */
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
       #map {
-        height: 400px;
-        /* The height is 400 pixels */
-        width: 100%;
-        /* The width is the width of the web page */
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
       }
     </style>
-
-<script>
-  let map, infoWindow;
-  function initMap() {
-    position = { lat: -34.397, lng: 150.644 };
-    map = new google.maps.Map(document.getElementById(“map”), {
-      center: position,
-      zoom: 10,
-    });
-    const marker = new google.maps.Marker({
-      // The below line is equivalent to writing:
-      // position: new google.maps.LatLng(-34.397, 150.644)
-      position: position,
-      map: map,
-    });
-    infoWindow = new google.maps.InfoWindow();
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-            marker.setPosition(pos);
-            infoWindow.setPosition(pos);
-            infoWindow.setContent("location found!");
-            infoWindow.open(map);
-            map.setCenter(pos);
-          },
-          () => {
-            handleLocationError(true, infoWindow, map.getCenter());
-          }
-         );
-      } else {
-        // Browser doesn’t support Geolocation
-        handleLocationError(false, infoWindow, map.getCenter());
+    <script>
+      let map;
+      let latitude = <%=lat%>;
+      let longitude = <%=lng%>;
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: latitude, lng: longitude },
+          zoom: 8,
+        });
       }
-  }
-      </script>
+    </script>
   </head>
   <body>
-    <h3>My Google Maps Demo</h3>
-    <!--The div element for the map -->
-    <div id="map"></div><br><br>
-
-    <div class="topnav">
-
-      <input type="text" placeholder="Search..">
-    </div>
+    <div id="map"></div>
   </body>
 </html>

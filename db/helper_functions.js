@@ -39,7 +39,6 @@ const checkUserByEmail = function(email) {
 
   return pool.query(query, [email])
   .then((res) =>{
-    console.log(res);
     return res.rows[0];
   })
 }
@@ -74,7 +73,7 @@ helper.deleteMap = deleteMap;
 
 const getMapByID = function(map_id) {
   query = `SELECT * FROM maps
-           WHERE map_id = $1 `
+           WHERE id = $1 `
 
   return pool.query(query, [map_id])
   .then((res) => {
