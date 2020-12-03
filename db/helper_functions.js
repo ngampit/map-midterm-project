@@ -3,7 +3,7 @@ module.exports = (pool) => {
   const helper = {};
 
 const getAllMaps = function() {
-  return pool.query(`SELECT maps.title as map_title, maps.center_lat, maps.center_long, maps.zoom, maps.created_at map_creation, maps.description as map_description, markers.title as marker_title, markers.lat, markers.long, markers.created_at as marker_creation, marker_icons.description as icon_description, markers.image
+  return pool.query(`SELECT maps.id as map_id, maps.title as map_title, maps.center_lat, maps.center_long, maps.zoom, maps.created_at map_creation, maps.description as map_description, markers.title as marker_title, markers.lat, markers.long, markers.created_at as marker_creation, marker_icons.description as icon_description, markers.image
   FROM maps
   JOIN markers ON maps.id = map_id
   JOIN marker_icons ON icon_id = marker_icons.id
@@ -16,14 +16,15 @@ const getAllMaps = function() {
 helper.getAllMaps = getAllMaps;
 
 const getFavouritesMaps = function(user_id) {
-  const query = `SELECT maps.title as map_title, maps.center_lat, maps.center_long, maps.zoom, maps.created_at map_creation, maps.description as map_description, markers.title as marker_title, markers.lat, markers.long, markers.created_at as marker_creation, marker_icons.description as icon_description, markers.image
+  const query = `SELECT maps.id as map_id, maps.title as map_title, maps.center_lat, maps.center_long, maps.zoom, maps.created_at map_creation, maps.description as map_description, markers.title as marker_title, markers.lat, markers.long, markers.created_at as marker_creation, marker_icons.description as icon_description, markers.image
   FROM fav_user_maps
   JOIN maps on maps.id = fav_user_maps.map_id
   join users on users.id = fav_user_maps.user_id
   join markers on maps.id = markers.map_id
   JOIN marker_icons ON icon_id = marker_icons.id
   WHERE users.id = $1
-  LIMIT 30;`
+  ORDER BY maps.created_at
+  LIMIT 3;`
 
   return pool.query(query, [user_id])
   .then((res) =>{
