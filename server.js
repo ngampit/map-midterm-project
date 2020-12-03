@@ -77,7 +77,7 @@ app.get("/", (req, res) => {
   const id = req.session && req.session.user_id?req.session.user_id:-1;
 
 //  console.log(req);
-  if(!id) {
+  if(id === -1) {
      return helper.getAllMaps()
     .then((data)=> {
       const tempVars = {
