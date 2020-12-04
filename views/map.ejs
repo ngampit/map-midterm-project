@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <!-- Bootstrap -->
@@ -16,61 +17,76 @@
   <script defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjwvQUlvnSLtKZlbDFKbFZoj2IriOF_XY&callback=initMap">
   </script>
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
     integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-  </script>
+  </script> -->
   <title>Wiki Map</title>
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;900&display=swap" rel="stylesheet">
   <!-- Font Awesome -->
   <script src="https://kit.fontawesome.com/fd87467771.js" crossorigin="anonymous"></script>
-    <style type="text/css">
-      /* Always set the map height explicitly to define the size of the div
+  <style type="text/css">
+    /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
-      #map {
-        height: 400px;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html,
-      body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-    <script>
-      let markers = [];
-      let map;
-      let latitude = <%=lat%>;
-      let longitude = <%=lng%>;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById("map"), {
-          center: { lat: latitude, lng: longitude },
-          zoom: 8,
-        });
-         // This event listener will call addMarker() when the map is clicked.
-         map.addListener("click", (event) => {
-          console.log(event.latLng.lat())
-          console.log(event.latLng.lng())
-          addMarker(event.latLng);
+    #map {
+      height: 400px;
+    }
 
-        });
-      }
-            // Adds a marker to the map and push to the array.
-            function addMarker(location) {
-        const marker = new google.maps.Marker({
-          position: location,
-          map: map,
-        });
-        markers.push(marker);
-        // console.log(markers)
-      }
-    </script>
-  </head>
-  <body>
-    <div id="map"></div>
-    <div>
-    </div>
-  </body>
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+  </style>
+  <script>
+    let markers = [];
+    let map;
+    let latitude = <%=lat%>;
+    let longitude = <%=lng%>;
+    let map_id = <%=map_id%>
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: {
+          lat: latitude,
+          lng: longitude
+        },
+        zoom: 8,
+      });
+      // This event listener will call addMarker() when the map is clicked.
+      map.addListener("click", (event) => {
+        console.log(event.latLng.lat())
+        console.log(event.latLng.lng())
+        addMarker(event.latLng);
+
+      });
+    }
+    // Adds a marker to the map and push to the array.
+    function addMarker(location) {
+      const marker = new google.maps.Marker({
+        position: location,
+        map: map,
+      });
+      $.ajax({
+        type: "POST",
+        url: `http://localhost:8080/api/widgets/${map_id}/create`,
+        data: {lat: location.lat(), lng: location.lng()},
+      });
+      markers.push(marker);
+      // console.log(markers)
+    }
+
+  </script>
+</head>
+
+<body>
+  <div id="map"></div>
+  <div>
+  </div>
+</body>
+
 </html>
