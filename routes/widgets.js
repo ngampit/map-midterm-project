@@ -90,22 +90,24 @@ module.exports = (helper) => {
 
 
 // this one will be in frontend on Ajax
-   router.post("/:map_id/create/: markerId", (req, res) => {
+   router.post("/:map_id/create", (req, res) => {
+     console.log(req)
     const data = {
       map_id : req.params.map_id,
       user_id : req.session,
       title : "title",
-      center_lat: 13.7563,
-      center_long:100.5018,
+      lat: req.body.lng,
+      long: req.body.lat,
       description: "test Description"
      }
-    return helper.addMarker(mapId)
+    return helper.addMarker(data)
 
-    .then(data => {
-      const tempVars = {
-        lat : center_lat,
-        lng : center_long
-      }
+    // .then(data => {
+    //   const tempVars = {
+    //     lat : center_lat,
+    //     lng : center_long
+    //   }
+
     res.render('map', tempVars)
     }).catch(err => {
       res
@@ -138,6 +140,7 @@ router.get("/:map_id", (req, res) => {
   .then((data) => {
     console.log("line 130", data);
     const tempVars = {
+      map_id: data.id,
        lat : data.center_lat,
        lng : data.center_long
     }
