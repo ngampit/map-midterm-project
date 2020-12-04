@@ -51,6 +51,12 @@
           <li class="nav-item">
             <a class="nav-link" href="#">example2</a>
           </li>
+            <form class="form-inline" action="/logout" method="POST">
+              <label for="logout">Logout:</label>
+            <button type="submit" class="btn btn-primary">Logout</button></form>
+          <li>
+
+          </li>
         </ul>
       </div>
     </nav>
@@ -60,18 +66,47 @@
     <section>
       <div>
         <h1>Create New Map</h1>
-        <form>
+        <form action="/api/widgets/" method="POST">
           <div class="form-group">
             <label for="exampleFormControlInput1">Map Name</label>
-            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter map name here">
+            <input name="title" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter map name here">
           </div>
           <div class="form-group">
             <label for="exampleFormControlTextarea1">Enter a map description</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
           </div>
         </form>
-        <button class="center">Create Map</button>
+        <!-- <button class="center">Create Map</button> -->
       </div>
+    </section>
+
+    <section>
+      <% for (let entry of favouriteMaps) { %>
+        <ul>
+          <li><%=entry.map_id%></li>
+          <li><%=entry.map_title%></li>
+          <li><%=entry.map_description%></li>
+          <li><%=entry.map_creation%></li>
+
+        </ul>
+        <% } %>
+
+        <% for (let entry of allMaps) { %>
+          <ul>
+            <li><%=entry.map_id%></li>
+            <li><%=entry.map_title%></li>
+            <li><%=entry.map_description%></li>
+            <li><%=entry.map_creation%></li>
+            <form method="GET" action="/api/widgets/<%=entry.map_id%>">
+              <button name="get" type="submit" class="btn btn-outline-primary">
+                <%=entry.map_title%>
+              </button>
+              </form>
+
+          </ul>
+          <% } %>
+
     </section>
 
     <section style="background-color: #BABABA;">

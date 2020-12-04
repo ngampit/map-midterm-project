@@ -13,7 +13,10 @@ body {
 
 .title-image {
   border-radius: 25%;
-  margin: 2em;
+  // margin: 2em;
+  margin-right: 5em;
+  margin-top: 2em;
+  display: block;
 
 }
 
@@ -24,15 +27,18 @@ body {
   font-family: 'Pacifico', cursive;
   padding-bottom: 5em;
   color: #17a2b8;
+  padding-top: 2em;
 }
 
 .explore-maps {
   background-color: #17a2b8;
   border-color: #17a2b8;
+  border-radius: 60%;
 }
 
 .login {
   background-color: #17a2b8;
   border-color: #17a2b8;
+  border-radius: 60%;
 
 }

@@ -1,41 +1,92 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Add Map</title>
-    <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjwvQUlvnSLtKZlbDFKbFZoj2IriOF_XY&callback=initMap&libraries=&v=weekly"
-      defer
-    ></script>
-    <style type="text/css">
-      /* Set the size of the div element that contains the map */
-      #map {
-        height: 400px;
-        /* The height is 400 pixels */
-        width: 100%;
-        /* The width is the width of the web page */
-      }
-    </style>
-    <script>
-      // Initialize and add the map
-      function initMap() {
-        // The location of Uluru
-        const uluru = { lat: -25.344, lng: 131.036 };
-        // The map, centered at Uluru
-        const map = new google.maps.Map(document.getElementById("map"), {
-          zoom: 4,
-          center: uluru,
-        });
-        // The marker, positioned at Uluru
-        const marker = new google.maps.Marker({
-          position: uluru,
-          map: map,
-        });
-      }
-    </script>
-  </head>
-  <body>
-    <h3>My Google Maps Demo</h3>
-    <!--The div element for the map -->
-    <div id="map"></div>
-  </body>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css" />
+  <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+  <!-- Scripts -->
+  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+  <script type="text/javascript" src="/scripts/app.js"></script>
+  <script defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjwvQUlvnSLtKZlbDFKbFZoj2IriOF_XY&callback=initMap">
+  </script>
+  <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+  </script> -->
+  <title>Wiki Map</title>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;900&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/fd87467771.js" crossorigin="anonymous"></script>
+  <style type="text/css">
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+    #map {
+      height: 400px;
+    }
+
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+  </style>
+  <script>
+    let markers = [];
+    let map;
+    let latitude = <%=lat%>;
+    let longitude = <%=lng%>;
+    let map_id = <%=map_id%>
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: {
+          lat: latitude,
+          lng: longitude
+        },
+        zoom: 8,
+      });
+      // This event listener will call addMarker() when the map is clicked.
+      map.addListener("click", (event) => {
+        console.log(event.latLng.lat())
+        console.log(event.latLng.lng())
+        addMarker(event.latLng);
+
+      });
+    }
+    // Adds a marker to the map and push to the array.
+    function addMarker(location) {
+      const marker = new google.maps.Marker({
+        position: location,
+        map: map,
+      });
+      $.ajax({
+        type: "POST",
+        url: `http://localhost:8080/api/widgets/${map_id}/create`,
+        data: {lat: location.lat(), lng: location.lng()},
+      });
+      markers.push(marker);
+      // console.log(markers)
+    }
+
+  </script>
+</head>
+
+<body>
+  <div id="map"></div>
+  <div>
+  </div>
+</body>
+
 </html>

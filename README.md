@@ -41,3 +41,42 @@ The following steps are only for _one_ of the group members to perform.
 - Node 10.x or above
 - NPM 5.x or above
 - PG 6.x
+
+
+
+/ 
+  1 - POST to users/new
+  2 - POST to users/login
+
+/users -> 
+  /
+    /:id - GET from (/login & /new) and render user's page
+
+  /login - GET render login page - hit button POST request to /:id
+
+  /logout - render main page (/)
+
+  /new GET from (/)-> render register - hit button register POST to DB and redirect to /:id  res.redirect(/:id)
+
+/api -> 
+  /add marker 
+  /delete marker 
+  /edit marker 
+  /create map 
+  /delete map 
+  /edit map 
+  /favorite 
+
+Get home page (‘/) requests home page to be rendered 
+Get users/page - requests user page to get rendered 
+Get - Login Page
+Get - Register Page
+
+Post - Register
+Post - Login
+Post - Logout
+Post - Add Marker
+Post - edit Map 
+Post - delete map
+Post - Create Map
+Post - View Map

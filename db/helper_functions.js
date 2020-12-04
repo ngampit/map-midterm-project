@@ -1,7 +1,9 @@
 
+module.exports = (pool) => {
+  const helper = {};
 
 const getAllMaps = function() {
-  return pool.query(`SELECT maps.title as map_title, maps.center_lat, maps.center_long, maps.zoom, maps.created_at map_creation, maps.description as map_description, markers.title as marker_title, markers.lat, markers.long, markers.created_at as marker_creation, marker_icons.description as icon_description, markers.image
+  return pool.query(`SELECT maps.id as map_id, maps.title as map_title, maps.center_lat, maps.center_long, maps.zoom, maps.created_at map_creation, maps.description as map_description, markers.title as marker_title, markers.lat, markers.long, markers.created_at as marker_creation, marker_icons.description as icon_description, markers.image
   FROM maps
   JOIN markers ON maps.id = map_id
   JOIN marker_icons ON icon_id = marker_icons.id
@@ -11,17 +13,18 @@ const getAllMaps = function() {
     return res.rows;
   })
 }
-exports.getAllMaps = getAllMaps;
+helper.getAllMaps = getAllMaps;
 
 const getFavouritesMaps = function(user_id) {
-  const query = `SELECT maps.title as map_title, maps.center_lat, maps.center_long, maps.zoom, maps.created_at map_creation, maps.description as map_description, markers.title as marker_title, markers.lat, markers.long, markers.created_at as marker_creation, marker_icons.description as icon_description, markers.image
+  const query = `SELECT maps.id as map_id, maps.title as map_title, maps.center_lat, maps.center_long, maps.zoom, maps.created_at map_creation, maps.description as map_description, markers.title as marker_title, markers.lat, markers.long, markers.created_at as marker_creation, marker_icons.description as icon_description, markers.image
   FROM fav_user_maps
   JOIN maps on maps.id = fav_user_maps.map_id
   join users on users.id = fav_user_maps.user_id
   join markers on maps.id = markers.map_id
   JOIN marker_icons ON icon_id = marker_icons.id
   WHERE users.id = $1
-  LIMIT 30;`
+  ORDER BY maps.created_at
+  LIMIT 3;`
 
   return pool.query(query, [user_id])
   .then((res) =>{
@@ -29,19 +32,18 @@ const getFavouritesMaps = function(user_id) {
   })
 
 }
-exports.getFavouritesMaps = getFavouritesMaps;
+helper.getFavouritesMaps = getFavouritesMaps;
 
 
 const checkUserByEmail = function(email) {
-  const query = `SELECT * FROM users
-                 WHERE email = $1
-                `
+  const query = `SELECT * FROM users WHERE email = $1`;
+
   return pool.query(query, [email])
   .then((res) =>{
     return res.rows[0];
   })
 }
-exports.checkUserByEmail = checkUserByEmail;
+helper.checkUserByEmail = checkUserByEmail;
 
 
 
@@ -59,7 +61,7 @@ const createNewMap = function(data) {
     return res.rows[0];
   })
 }
-exports.createNewMap = createNewMap;
+helper.createNewMap = createNewMap;
 
 
 const deleteMap = function(map_id) {
@@ -67,22 +69,23 @@ const deleteMap = function(map_id) {
 
   return pool.query(query, [map_id])
 }
-exports.deleteMap = deleteMap;
+helper.deleteMap = deleteMap;
 
 
 const getMapByID = function(map_id) {
   query = `SELECT * FROM maps
-           WHERE map_id = $1 `
+           WHERE id = $1 `
 
   return pool.query(query, [map_id])
   .then((res) => {
     return res.rows[0];
   })
 }
-exports.getMapByID = getMapByID;
+helper.getMapByID = getMapByID;
 
 
 const addMarker = function(data) {
+  console.log("data inside of add marker", data)
   const map_id = data.map_id;
   const user_id = data.user_id;
   const title = data.title;
@@ -90,14 +93,18 @@ const addMarker = function(data) {
   const long = data.long;
   const description = data.description;
 
-  query = `INSERT INTO markers (map_id, user_id,title, lat, long, description) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;`;
+  query = `INSERT INTO markers (map_id, user_id,title, lat, long, description, created_at) VALUES ($1, $2, $3, $4, $5, $6, now()) RETURNING *;`;
 
   return pool.query(query, [map_id, user_id, title, lat, long, description])
   .then((res) => {
+    console.log("response", res)
     return res.rows[0];
   })
+  .catch(err => {
+    console.log(err)
+  })
 }
-exports.addMarker = addMarker;
+helper.addMarker = addMarker;
 
 
 
@@ -106,7 +113,7 @@ const deleteMarker = function(marker_id) {
 
   return pool.query(query, [marker_id])
 }
-exports.deleteMarker = deleteMarker;
+helper.deleteMarker = deleteMarker;
 
 
 const markFavourite = function(map_id, user_id) {
@@ -117,11 +124,14 @@ const markFavourite = function(map_id, user_id) {
     return res.rows[0];
   })
 }
-exports.markFavourite = markFavourite;
+helper.markFavourite = markFavourite;
 
 const unmarkFavourite = function(map_id, user_id) {
   query = `DELETE FROM fav_user_maps (map_id, user_id) VALUES ($1, $2);`;
 
   return pool.query(query, [map_id, user_id])
 }
-exports.unmarkFavourite = unmarkFavourite;
+helper.unmarkFavourite = unmarkFavourite;
+
+return helper;
+}
