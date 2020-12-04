@@ -85,6 +85,7 @@ helper.getMapByID = getMapByID;
 
 
 const addMarker = function(data) {
+  console.log("data inside of add marker", data)
   const map_id = data.map_id;
   const user_id = data.user_id;
   const title = data.title;
@@ -92,11 +93,15 @@ const addMarker = function(data) {
   const long = data.long;
   const description = data.description;
 
-  query = `INSERT INTO markers (map_id, user_id,title, lat, long, description) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;`;
+  query = `INSERT INTO markers (map_id, user_id,title, lat, long, description, created_at) VALUES ($1, $2, $3, $4, $5, $6, now()) RETURNING *;`;
 
   return pool.query(query, [map_id, user_id, title, lat, long, description])
   .then((res) => {
+    console.log("response", res)
     return res.rows[0];
+  })
+  .catch(err => {
+    console.log(err)
   })
 }
 helper.addMarker = addMarker;
