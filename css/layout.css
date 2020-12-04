@@ -11,23 +11,23 @@ nav {
   color: #5780B2;
 }
 
-.container-fluid {
+.main-page {
   background-image: url(https://images.unsplash.com/photo-1476973422084-e0fa66ff9456?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1583&q=80);
   height: 100vh;
   background-repeat: no-repeat;
-  width: 100%;
+  width: 100vw;
   text-align: center;
   color: #33435c;
 }
 
-.container-fluid h1 {
+.main-page h1 {
   margin-top: 100px;
   font-weight: 400;
   font-size: 85px;
   line-height: 1.5;
 }
 
-.container-fluid button {
+.main-page button {
   margin-top: 6em;
   padding: 25px;
   background-color: #33435c;
@@ -37,4 +37,45 @@ nav {
 .feature-box {
   text-align: center;
   padding: 5%;
+}
+
+#map {
+  height: 800px;
+  /* The height is 400 pixels */
+  width: 100%;
+  /* The width is the width of the web page */
+}
+
+#sidebar {
+  background-color: #EEE;
+}
+
+.button {
+  display: inline;
+}
+
+.my-maps {
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+.user-section-heading {
+  text-align: center;
+  padding-top: 1em;
+}
+
+main {
+  margin: 1em;
+}
+
+.center {
+  display: block;
+  margin: auto;
+}
+
+footer {
+  height: 100px;
 }

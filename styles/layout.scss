@@ -15,11 +15,11 @@ nav {
 
 // Main Page Banner
 
-.container-fluid {
+.main-page {
   background-image: url(https://images.unsplash.com/photo-1476973422084-e0fa66ff9456?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1583&q=80);
   height: 100vh;
   background-repeat: no-repeat;
-  width: 100%;
+  width: 100vw;
   text-align: center;
   color: #33435c;
 
@@ -45,4 +45,55 @@ nav {
   padding: 5%;
 }
 
+
+
+
+// Map page styles -------------------------------------------------------------------
+
+#map {
+  height: 800px;
+  /* The height is 400 pixels */
+  width: 100%;
+  /* The width is the width of the web page */
+}
+
+
+#sidebar {
+  background-color: #EEE;
+}
+
+
+
+// Button styling
+.button {
+  display: inline;
+}
+
+
+
+// User Page ---------------------------------------------------------------
+
+.my-maps {
+  justify-content: space-evenly;
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+.user-section-heading { // styles section headers in users pages3
+  text-align: center;
+  padding-top: 1em;
+}
+
+main {
+  margin: 1em;
+}
+
+.center {               // centering buttons on user page
+  display: block;
+  margin: auto;
+}
+
+footer {
+  height: 100px;
+}
 

@@ -1,0 +1,23 @@
+.title-image {
+  border-radius: 25%;
+  margin: 2em;
+}
+
+.title {
+  text-align: center;
+  margin: auto;
+  font-size: 30px;
+  font-family: 'Pacifico', cursive;
+  padding-bottom: 5em;
+  color: #17a2b8;
+}
+
+.explore-maps {
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+}
+
+.login {
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+}
