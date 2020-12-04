@@ -126,6 +126,20 @@ const markFavourite = function(map_id, user_id) {
 }
 helper.markFavourite = markFavourite;
 
+
+const getMarkersByMapId = function(map_id) {
+  query = `SELECT * FROM markers
+           WHERE map_id = $1 `
+
+  return pool.query(query, [map_id])
+  .then((res) => {
+    return res.rows;
+  })
+}
+helper.getMarkersByMapId = getMarkersByMapId;
+
+
+
 const unmarkFavourite = function(map_id, user_id) {
   query = `DELETE FROM fav_user_maps (map_id, user_id) VALUES ($1, $2);`;
 
@@ -138,3 +152,5 @@ helper.unmarkFavourite = unmarkFavourite;
 
 return helper;
 }
+
+
