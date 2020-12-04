@@ -1,15 +1,48 @@
 // first page loading
 
 $(() => {
+
+let markers = [];
+let map;
+let latitude = <%=lat%>;
+let longitude = <%=lng%>;
+function initMap() {
+  map = new google.maps.Map(document.getElementById("map"), {
+    center: { lat: latitude, lng: longitude },
+    zoom: 8,
+  });
+   // This event listener will call addMarker() when the map is clicked.
+   map.addListener("click", (event) => {
+
+//    console.log(event.latLng.lat())
+//    console.log(event.latLng.lng())
+    addMarker(event.latLng);
+
+  });
+}
+      // Adds a marker to the map and push to the array.
+  function addMarker(location) {
+  const marker = new google.maps.Marker({
+    position: location,
+    map: map
+  });
+  markers.push(marker);
+  let myData = {};
+}
   $.ajax({
-    method: "GET",
-    url: "/api/users"
+    method: "POST",
+    url: "/api/widgets/:map_id/create/:markerId",
+    data : myData
   }).done((users) => {
-    for(user of users) {
-      $("<div>").text(user.name).appendTo($("body"));
-    }
+    // for(user of users) {    // original
+    //   $("<div>").text(user.name).appendTo($("body")); }  // original
+
+
   });;
 });
+
+
+
 
 
 // let map, infoWindow;
