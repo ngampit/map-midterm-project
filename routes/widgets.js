@@ -26,17 +26,21 @@ module.exports = (helper) => {
   //     });
   // });
 
-   router.post("/", (req, res) => {
+
+   router.post("/:map_id", (req, res) => {
     const data = { user_id : req.session,
-                   title : req.body.title,
-                   center_lat:  43.70011,
-                   center_long: -79.4163,
-                   description: req.body.description
+                   title : "title",
+                   center_lat: 13.7563,
+                   center_long:100.5018,
+                   description: "test Description"
                   }
     return helper.createNewMap(data)
     .then((data) => {
-      // res.render('map', tempVars)
-      res.redirect(`/api/widgets/${data.id}`);
+      const tempVars = {
+         lat : center_lat,
+         lng : center_long
+      }
+      res.render('map', tempVars)
     }).catch(err => {
       res
         .status(500)
@@ -44,18 +48,6 @@ module.exports = (helper) => {
     });
 
     })
-
-    // router.get("/:map_id", (req, res) => {
-    //   return helper.getMapById()
-    //   .then (data => {
-    //     const tempVars = {
-    //       lat : data.center_lat,
-    //       lng : data.center_long
-    //    }
-    //    res.render("map", tempVars)
-    //   })
-
-    // });
 
 
 
@@ -90,24 +82,22 @@ module.exports = (helper) => {
 
 
 // this one will be in frontend on Ajax
-   router.post("/:map_id/create", (req, res) => {
-     console.log(req)
+   router.post("/:map_id/create/: markerId", (req, res) => {
     const data = {
       map_id : req.params.map_id,
       user_id : req.session,
       title : "title",
-      lat: req.body.lng,
-      long: req.body.lat,
+      center_lat: 13.7563,
+      center_long:100.5018,
       description: "test Description"
      }
-    return helper.addMarker(data)
+    return helper.addMarker(mapId)
 
-    // .then(data => {
-    //   const tempVars = {
-    //     lat : center_lat,
-    //     lng : center_long
-    //   }
-
+    .then(data => {
+      const tempVars = {
+        lat : center_lat,
+        lng : center_long
+      }
     res.render('map', tempVars)
     }).catch(err => {
       res
@@ -140,7 +130,6 @@ router.get("/:map_id", (req, res) => {
   .then((data) => {
     console.log("line 130", data);
     const tempVars = {
-      map_id: data.id,
        lat : data.center_lat,
        lng : data.center_long
     }
