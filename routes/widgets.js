@@ -26,39 +26,9 @@ module.exports = (helper) => {
   //     });
   // });
 
-<<<<<<< HEAD
-
-   router.post("/:map_id", (req, res) => {
-    const data = { user_id : req.session,
-                   title : "title",
-                   center_lat: 13.7563,
-                   center_long:100.5018,
-                   description: "test Description"
-                  }
-    return helper.createNewMap(data)
-    .then((data) => {
-      const tempVars = {
-         lat : center_lat,
-         lng : center_long
-      }
-      res.render('map', tempVars)
-    }).catch(err => {
-      res
-        .status(500)
-        .json({ error: err.message });
-    });
-
-    })
-
-
-
-   router.post("delete/:map_id", (req, res) => {
-      const mapId = req.params;
-      return helper.deleteMap(mapId)
-=======
   router.post("/", (req, res) => {
     const data = {
-      user_id: req.session,
+      user_id: req.session.user_id,
       title: req.body.title,
       center_lat: 43.70011,
       center_long: -79.4163,
@@ -93,9 +63,8 @@ module.exports = (helper) => {
 
 
   router.post("delete/:map_id", (req, res) => {
-    const mapId = req.params;
+    const mapId = req.params.map_id;
     return helper.deleteMap(mapId)
->>>>>>> da874853748bc5cea3e184ef0c7787b1420dbbfb
       .then(res.send("delete done"))
       .catch(err => {
         res
@@ -108,7 +77,7 @@ module.exports = (helper) => {
   })
 
   router.post("/edit/:map_id", (req, res) => {
-    const mapId = req.params;
+    const mapId = req.params.map_id;
     return helper.getMapByID(mapId)
       .then(data => {
         const tempVars = {
@@ -127,51 +96,20 @@ module.exports = (helper) => {
 
 
 
-<<<<<<< HEAD
-// this one will be in frontend on Ajax
-   router.post("/:map_id/create/: markerId", (req, res) => {
-    const data = {
-      map_id : req.params.map_id,
-      user_id : req.session,
-      title : "title",
-      center_lat: 13.7563,
-      center_long:100.5018,
-      description: "test Description"
-     }
-    return helper.addMarker(mapId)
-
-    .then(data => {
-      const tempVars = {
-        lat : center_lat,
-        lng : center_long
-      }
-    res.render('map', tempVars)
-    }).catch(err => {
-      res
-         .status(500)
-         .json({ error: err.message });
-    });
-=======
   // this one will be in frontend on Ajax
   router.post("/:map_id/create", (req, res) => {
-    console.log(req)
     const data = {
       map_id: req.params.map_id,
-      user_id: req.session,
+      user_id: req.session.user_id,
       title: "title",
-      lat: req.body.lng,
-      long: req.body.lat,
+      lat: req.body.lat,
+      long: req.body.lng,
       description: "test Description"
     }
     return helper.addMarker(data)
 
       .then(data => {
-        const tempVars = {
-          lat: center_lat,
-          lng: center_long
-        }
-
-        res.render('map', tempVars)
+        res.render('map')
       }).catch(err => {
         res
           .status(500)
@@ -179,12 +117,8 @@ module.exports = (helper) => {
             error: err.message
           });
       });
->>>>>>> da874853748bc5cea3e184ef0c7787b1420dbbfb
 
   })
-
-
-
 
   router.post("/:map_id/delete/:markerId", (req, res) => {
     const marker_id = req.params.markerId;
@@ -201,44 +135,26 @@ module.exports = (helper) => {
   })
 
 
-<<<<<<< HEAD
-router.get("/:map_id", (req, res) => {
-  const map_id = req.params.map_id;
-  console.log("line 127", map_id)
-  return helper.getMapByID(map_id)
-  .then((data) => {
-    console.log("line 130", data);
-    const tempVars = {
-       lat : data.center_lat,
-       lng : data.center_long
-    }
-//    res.send(tempVars);
-//    console.log(tempVars);
-    res.render('map', tempVars)
-  }).catch(err => {
-    res
-      .status(500)
-      .json({ error: err.message });
-  });
-=======
   router.get("/:map_id", (req, res) => {
     const map_id = req.params.map_id;
     console.log("line 127", map_id)
     return helper.getMapByID(map_id)
       .then((data) => {
         console.log("line 130", data);
-        const tempVars = {
-          map_id: data.id,
-          lat: data.center_lat,
-          lng: data.center_long
-        }
+        return res.render('map');
 
-        helper.getMarkersByMapId(map_id)
-          .then((markers) => {
-            tempVars["markers"] = markers
-            console.log(tempVars);
-            return res.render('map', tempVars)
-          })
+        // const tempVars = {
+        //   map_id: data.id,
+        //   lat: data.center_lat,
+        //   lng: data.center_long
+        // }
+
+        // helper.getMarkersByMapId(map_id)
+        //   .then((markers) => {
+        //     tempVars["markers"] = markers
+        //     console.log(tempVars);
+        //     return res.render('map', tempVars)
+        //   })
         //    res.send(tempVars);
         //    console.log(tempVars);
         // res.render('map', tempVars)
@@ -257,7 +173,6 @@ router.get("/:map_id", (req, res) => {
     console.log("line 127", map_id)
     return helper.getMarkersByMapId(map_id)
       .then((data) => {
-        console.log("line 130", data);
         const tempVars = {
           map_id: data.id,
           lat: data.center_lat,
@@ -274,7 +189,6 @@ router.get("/:map_id", (req, res) => {
             error: err.message
           });
       });
->>>>>>> da874853748bc5cea3e184ef0c7787b1420dbbfb
 
   })
 
@@ -285,8 +199,8 @@ router.get("/:map_id", (req, res) => {
 
   // favorite marker
   router.post("/:map_id/favorite", (req, res) => {
-    const map_id = req.params;
-    const user_id = req.session;
+    const map_id = req.params.map_id;
+    const user_id = req.session.user_id;
     helper.markFavourite(map_id, user_id)
       .then(res.send('maker favorite'))
       .catch(err => {
@@ -302,8 +216,8 @@ router.get("/:map_id", (req, res) => {
 
 
   router.post("/:map_id/unfavorite", (req, res) => {
-    const map_id = req.params;
-    const user_id = req.session;
+    const map_id = req.params.map_id;
+    const user_id = req.session.user_id;
     helper.unmarkFavourite(map_id, user_id)
       .then(res.send('unfavorite marker'))
       .catch(err => {

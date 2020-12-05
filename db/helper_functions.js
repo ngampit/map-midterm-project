@@ -85,7 +85,6 @@ helper.getMapByID = getMapByID;
 
 
 const addMarker = function(data) {
-  console.log("data inside of add marker", data)
   const map_id = data.map_id;
   const user_id = data.user_id;
   const title = data.title;
@@ -97,7 +96,7 @@ const addMarker = function(data) {
 
   return pool.query(query, [map_id, user_id, title, lat, long, description])
   .then((res) => {
-    console.log("response", res)
+    console.log(res.rows[0]);
     return res.rows[0];
   })
   .catch(err => {

@@ -43,6 +43,10 @@ app.use("/styles", sass({
   debug: true,
   outputStyle: 'expanded'
 }));
+app.use(cookieSession({
+  name: 'session',
+  keys: ['secret']
+}));
 app.use(express.static("public"));
 
 // Separated Routes for each Resource
@@ -67,10 +71,6 @@ app.use("/api/widgets", widgetsRoutes(helper));
 //   res.render("index");
 // });
 
-app.use(cookieSession({
-  name: 'session',
-  keys: ['secret']
-}));
 
 
 app.get("/", (req, res) => {
