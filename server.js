@@ -1,3 +1,4 @@
+
 // load .env data into process.env
 require('dotenv').config();
 
@@ -43,12 +44,21 @@ app.use("/styles", sass({
   debug: true,
   outputStyle: 'expanded'
 }));
+app.use(cookieSession({
+  name: 'session',
+  keys: ['secret']
+}));
 app.use(express.static("public"));
 
 // Separated Routes for each Resource
 // Note: Feel free to replace the example routes below with your own
 const usersRoutes = require("./routes/users");
 const widgetsRoutes = require("./routes/widgets");
+
+app.use(cookieSession({
+  name: 'session',
+  keys: ['secret']
+}));
 
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
@@ -67,16 +77,11 @@ app.use("/api/widgets", widgetsRoutes(helper));
 //   res.render("index");
 // });
 
-app.use(cookieSession({
-  name: 'session',
-  keys: ['secret']
-}));
 
 
 app.get("/", (req, res) => {
   const id = req.session && req.session.user_id?req.session.user_id:-1;
 
-//  console.log(req);
   if(id === -1) {
      return helper.getAllMaps()
     .then((data)=> {
@@ -95,6 +100,7 @@ app.get("/", (req, res) => {
   }
   return helper.getFavouritesMaps(id)
   .then((favouriteMaps)=>{
+    console.log('this is the favouritesMaps', favouriteMaps)
 
 
 
@@ -102,6 +108,7 @@ app.get("/", (req, res) => {
       favouriteMaps
 
    }
+   console.log(tempVars)
    helper.getAllMaps()
    .then((allMaps) => {
     tempVars["allMaps"] = allMaps

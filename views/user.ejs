@@ -81,7 +81,7 @@
       </div>
     </section>
 
-    <section>
+    <!-- <section>
       <% for (let entry of favouriteMaps) { %>
         <ul>
           <li><%=entry.map_id%></li>
@@ -89,6 +89,11 @@
           <li><%=entry.map_description%></li>
           <li><%=entry.map_creation%></li>
 
+          <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.map_id %>/unfavourite">
+            <button type="submit" class="btn btn-outline-danger">
+              Unfavourite
+              </button>
+            </form>
         </ul>
         <% } %>
 
@@ -103,16 +108,21 @@
                 <%=entry.title%>
               </button>
               </form>
-              <form method="POST" action="/api/widgets/delete/<%=entry.id%>">
-                <button  class="btn btn-outline-danger">
+              <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.id %>/delete">
+                <button type="submit" class="btn btn-outline-danger">
                     Delete
                   </button>
-
+                </form>
+                <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.id %>/favourite">
+                  <button type="submit" class="btn btn-outline-danger">
+                      Favourite
+                    </button>
+                  </form>
 
           </ul>
           <% } %>
 
-    </section>
+    </section> -->
 
     <section style="background-color: #BABABA;">
       <h1 class="user-section-heading">My Maps</h1>
@@ -160,86 +170,59 @@
       </div>
     </section>
 
+
     <section style="background-color: #AEBAB1;">
-      <h1 class="user-section-heading">Other User Maps</h1>
+      <h1 class="user-section-heading">All Maps</h1>
       <div class="row my-maps">
+        <% for (let entry of allMaps) { %>
         <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="..." alt="Card image cap">
           <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <form method="GET" action="">
-              <button name="get" type="button" value="delete" class="btn btn-outline-primary">
-                Go
+            <h2 class="card-title"><%=entry.title%></h2>
+            <h5 class="card-text"><%=entry.description%></h5>
+            <p><%=entry.created_at%></p>
+          </form>
+          <form method="GET" action="/api/widgets/<%=entry.id%>">
+            <button name="get" type="submit" class="btn btn-outline-primary">
+              <%=entry.title%>
+            </button>
+            </form>
+          <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.id %>/delete">
+            <button type="submit" class="btn btn-outline-danger">
+                Delete
               </button>
             </form>
-            <form method="POST" action="">
-              <button name="submit" type="submit" value="submit" class="btn btn-outline-warning">
-                Favourite
-              </button>
-            </form>
+            <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.id %>/favourite">
+              <button type="submit" class="btn btn-outline-danger">
+                  Favourite
+                </button>
+              </form>
           </div>
         </div>
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="..." alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="..." alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example sa to but.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
+        <% } %>
       </div>
     </section>
+
     <section style="background-color: #BABABA;">
       <h1 class="user-section-heading">Favourited Maps</h1>
       <div class="row my-maps">
+        <% for (let entry of favouriteMaps) { %>
         <div class="card" style="width: 18rem;">
           <img class="card-img-top" src="..." alt="Card image cap">
           <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <form method="GET" action="">
-              <button name="get" type="button" value="delete" class="btn btn-outline-primary">
-                Go
-              </button>
-            </form>
-            <form method="POST" action="">
-              <button name="submit" type="submit" value="submit" class="btn btn-outline-warning">
-                Favourite
+            <h2 class="card-title"><%=entry.map_title%></h2>
+            <h5 class="card-text"><%=entry.map_description%></h5>h5>
+            <p><%=entry.map_creation%></p>
+          <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.map_id %>/unfavourite">
+            <button type="submit" class="btn btn-outline-danger">
+              Unfavourite
               </button>
             </form>
           </div>
         </div>
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="..." alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="..." alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example sa to but.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
+        <% } %>
       </div>
     </section>
+
     <section style="background-color: #AEBAB1;">
       <h1 class="user-section-heading">Contributions</h1>
       <div class="row my-maps">
@@ -289,3 +272,4 @@
 </body>
 
 </html>
+
