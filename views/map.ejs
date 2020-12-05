@@ -60,7 +60,7 @@
       // for (let marker of markers) {
       <% markers.map((marker) => { %>
       new google.maps.Marker({
-      position: {lat: <%=marker.lat%>, lng: <%=marker.long%>},
+      position: {lat: <%=marker.long%>, lng: <%=marker.lat%>},
       map: map
     });
   <%})%>
@@ -69,7 +69,6 @@
         console.log(event.latLng.lng())
         addMarker(event.latLng);
       });
-
     // Adds a marker to the map and push to the array.
     function addMarker(location) {
       const marker = new google.maps.Marker({
