@@ -7,26 +7,20 @@
 
 const express = require('express');
 const router = express.Router();
-
-
+// const cookieSession = require('cookie-session');
+// app.use(cookieSession({
+//   name: 'session',
+//   keys: ['secret']
+// }));
 
 module.exports = (helper) => {
-  // router.get("/", (req, res) => {
-  //   let query = `SELECT * FROM widgets`;
-  //   console.log(query);
-  //   db.query(query)
-  //     .then(data => {
-  //       const widgets = data.rows;
-  //       res.json({ widgets });
-  //     })
-  //     .catch(err => {
-  //       res
-  //         .status(500)
-  //         .json({ error: err.message });
-  //     });
-  // });
 
   router.post("/", (req, res) => {
+    // const id = req.session && req.session.user_id?req.session.user_id:-1;
+
+    // if (id === -1) {
+    //   return res.status(401).send('User/Password not authorized to access this page');
+    // }
     const data = {
       user_id: req.session.user_id,
       title: req.body.title,
@@ -36,7 +30,6 @@ module.exports = (helper) => {
     }
     return helper.createNewMap(data)
       .then((data) => {
-        // res.render('map', tempVars)
         res.redirect(`/api/widgets/${data.id}`);
       }).catch(err => {
         res
@@ -48,24 +41,15 @@ module.exports = (helper) => {
 
   })
 
-  // router.get("/:map_id", (req, res) => {
-  //   return helper.getMapById()
-  //   .then (data => {
-  //     const tempVars = {
-  //       lat : data.center_lat,
-  //       lng : data.center_long
-  //    }
-  //    res.render("map", tempVars)
-  //   })
 
-  // });
-
+  router.post("/:id/delete", (req, res) => {
+    // const id = req.session && req.session.user_id?req.session.user_id:-1;
 
 
   router.post("delete/:map_id", (req, res) => {
     const mapId = req.params.map_id;
     return helper.deleteMap(mapId)
-      .then(res.send("delete done"))
+      .then(res.redirect("/"))
       .catch(err => {
         res
           .status(500)
@@ -121,6 +105,11 @@ module.exports = (helper) => {
   })
 
   router.post("/:map_id/delete/:markerId", (req, res) => {
+    const id = req.session && req.session.user_id?req.session.user_id:-1;
+
+    // if (id === -1) {
+    //   return res.status(401).send('User/Password not authorized to access this page');
+    // }
     const marker_id = req.params.markerId;
     helper.deleteMarker(maker_id)
       .then(res.send('maker deleted'))
@@ -136,6 +125,11 @@ module.exports = (helper) => {
 
 
   router.get("/:map_id", (req, res) => {
+    // const id = req.session && req.session.user_id?req.session.user_id:-1;
+
+    // if (id === -1) {
+    //   return res.status(401).send('User/Password not authorized to access this page');
+    // }
     const map_id = req.params.map_id;
     console.log("line 127", map_id)
     return helper.getMapByID(map_id)
@@ -168,8 +162,9 @@ module.exports = (helper) => {
 
   })
 
-  router.get("/:map_id/markers", (req, res) => {
-    const map_id = req.params.map_id;
+  router.get("/:id/markers", (req, res) => {
+
+    const map_id = req.params.id;
     console.log("line 127", map_id)
     return helper.getMarkersByMapId(map_id)
       .then((data) => {
@@ -232,5 +227,3 @@ module.exports = (helper) => {
 
   return router;
 }
-
-
