@@ -3,11 +3,7 @@ module.exports = (pool) => {
   const helper = {};
 
 const getAllMaps = function() {
-  return pool.query(`SELECT maps.id as map_id, maps.title as map_title, maps.center_lat, maps.center_long, maps.zoom, maps.created_at map_creation, maps.description as map_description, markers.title as marker_title, markers.lat, markers.long, markers.created_at as marker_creation, marker_icons.description as icon_description, markers.image
-  FROM maps
-  JOIN markers ON maps.id = map_id
-  JOIN marker_icons ON icon_id = marker_icons.id
-  LIMIT 30;`)
+  return pool.query(`SELECT * FROM maps WHERE created_at IS NOT NULL ORDER BY created_at DESC LIMIT 6;`)
 
   .then((res) =>{
     return res.rows;
@@ -54,7 +50,7 @@ const createNewMap = function(data) {
   const center_long = data.center_long;
   const description = data.description;
 
-  query = `INSERT INTO maps (user_id, title, center_lat, center_long, description) VALUES ($1, $2, $3, $4, $5) RETURNING *;`;
+  query = `INSERT INTO maps (user_id, title, center_lat, center_long, description, created_at) VALUES ($1, $2, $3, $4, $5, now()) RETURNING *;`;
 
   return pool.query(query, [user_id, title, center_lat, center_long, description])
   .then((res) => {
@@ -64,10 +60,10 @@ const createNewMap = function(data) {
 helper.createNewMap = createNewMap;
 
 
-const deleteMap = function(map_id) {
-  query = `DELETE FROM maps WHERE map_id = $1`;
+const deleteMap = function(id) {
+  query = `DELETE FROM maps WHERE id = $1`;
 
-  return pool.query(query, [map_id])
+  return pool.query(query, [id])
 }
 helper.deleteMap = deleteMap;
 
