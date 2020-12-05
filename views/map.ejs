@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <!-- Bootstrap -->
@@ -42,56 +41,56 @@
   </style>
   <script>
     // let markers = [];
+    // var gmarkers = [];
     let map;
-    let latitude = <%=lat%>;
-    let longitude = <%=lng%>;
-    let map_id = <%=map_id%>
-    // let markers = <%=markers%>
-    function initMap() {
-      map = new google.maps.Map(document.getElementById("map"), {
-        center: {
-          lat: latitude,
-          lng: longitude
-        },
+    let latitude = <%= lat %> ;
+    let longitude = <%= lng %> ;
+    let map_id = <%= map_id %>
+      // let markers = <%=markers%>
+      function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+          center: {
+            lat: latitude,
+            lng: longitude
+          },
           zoom: 8,
-      });
-      // console.log("marker", markers)
-      // This event listener will call addMarker() when the map is clicked.
-      // for (let marker of markers) {
-      <% markers.map((marker) => { %>
-      new google.maps.Marker({
-      position: {lat: <%=marker.lat%>, lng: <%=marker.long%>},
-      map: map
-    });
-  <%})%>
-      map.addListener("click", (event) => {
-        console.log(event.latLng.lat())
-        console.log(event.latLng.lng())
-        addMarker(event.latLng);
-      });
+        });
 
-    // Adds a marker to the map and push to the array.
-    function addMarker(location) {
-      const marker = new google.maps.Marker({
-        position: location,
-        map: map,
-      });
-      $.ajax({
-        type: "POST",
-        url: `http://localhost:8080/api/widgets/${map_id}/create`,
-        data: {lat: location.lat(), lng: location.lng()},
-      });
-      markers.push(marker);
-      // console.log(markers)
-    }
-  }
-  </script>
+        <% markers.map((marker) => {%>
+            new google.maps.Marker({
+              position: {
+                lat: <%= marker.long %> ,
+                lng: <%= marker.lat %>
+              },
+              map: map
+            });
+            <%})%>
+          map.addListener("click", (event) => {
+            console.log(event.latLng.lat())
+            console.log(event.latLng.lng())
+            addMarker(event.latLng);
+          });
+        // Adds a marker to the map and push to the array.
+        function addMarker(location) {
+          const marker = new google.maps.Marker({
+            position: location,
+            map: map,
+          });
+          $.ajax({
+            type: "POST",
+            url: `http://localhost:8080/api/widgets/${map_id}/create`,
+            data: {
+              lat: location.lat(),
+              lng: location.lng()
+            },
+          });
+        }
+      }
+      </script>
 </head>
-
 <body>
   <div id="map"></div>
   <div>
   </div>
 </body>
-
 </html>
