@@ -62,10 +62,11 @@ module.exports = (helper) => {
 
 
 
-  router.post("delete/:map_id", (req, res) => {
-    const mapId = req.params;
+  router.post("/delete/:map_id", (req, res) => {
+    const mapId = req.params.map_id;
+    console.log("req.params",req.params.map_id)
     return helper.deleteMap(mapId)
-      .then(res.send("delete done"))
+      .then(res.redirect("/"))
       .catch(err => {
         res
           .status(500)
@@ -73,7 +74,6 @@ module.exports = (helper) => {
             error: err.message
           });
       })
-
   })
 
   router.post("/edit/:map_id", (req, res) => {
@@ -131,7 +131,7 @@ module.exports = (helper) => {
 
   router.post("/:map_id/delete/:markerId", (req, res) => {
     const marker_id = req.params.markerId;
-    helper.deleteMarker(maker_id)
+    helper.deleteMarker(marker_id)
       .then(res.send('maker deleted'))
       .catch(err => {
         res
@@ -176,7 +176,7 @@ module.exports = (helper) => {
   })
 
   router.get("/:map_id/markers", (req, res) => {
-    const map_id = req.params.map_id;
+    const map_id = req.params;
     console.log("line 127", map_id)
     return helper.getMarkersByMapId(map_id)
       .then((data) => {
