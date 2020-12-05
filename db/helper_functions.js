@@ -11,15 +11,7 @@ const getAllMaps = function() {
 helper.getAllMaps = getAllMaps;
 
 const getFavouritesMaps = function(user_id) {
-  const query = `SELECT maps.id as map_id, maps.title as map_title, maps.center_lat, maps.center_long, maps.zoom, maps.created_at map_creation, maps.description as map_description, markers.title as marker_title, markers.lat, markers.long, markers.created_at as marker_creation, marker_icons.description as icon_description, markers.image
-  FROM fav_user_maps
-  JOIN maps on maps.id = fav_user_maps.map_id
-  join users on users.id = fav_user_maps.user_id
-  join markers on maps.id = markers.map_id
-  JOIN marker_icons ON icon_id = marker_icons.id
-  WHERE users.id = $1
-  ORDER BY maps.created_at
-  LIMIT 3;`
+  const query = `select fav_user_maps.user_id, map_id, maps.title as map_title,maps.created_at as map_creation, maps.description as map_description from fav_user_maps join maps on maps.id = map_id where fav_user_maps.user_id = $1 order by maps.created_at desc limit 6;`
 
   return pool.query(query, [user_id])
   .then((res) =>{
@@ -135,12 +127,10 @@ helper.getMarkersByMapId = getMarkersByMapId;
 
 
 const unmarkFavourite = function(map_id, user_id) {
-  query = `DELETE FROM fav_user_maps (map_id, user_id) VALUES ($1, $2);`;
+  query = `DELETE FROM fav_user_maps VALUES where map_id = $1 and user_id = $2;`;
 
   return pool.query(query, [map_id, user_id])
-  .then((res) => {
-    return res.rows[0];
-  })
+
 }
 helper.unmarkFavourite = unmarkFavourite;
 

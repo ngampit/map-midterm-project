@@ -89,6 +89,11 @@
           <li><%=entry.map_description%></li>
           <li><%=entry.map_creation%></li>
 
+          <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.map_id %>/unfavourite">
+            <button type="submit" class="btn btn-outline-danger">
+              Unfavourite
+              </button>
+            </form>
         </ul>
         <% } %>
 
@@ -108,7 +113,11 @@
                     Delete
                   </button>
                 </form>
-
+                <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.id %>/favourite">
+                  <button type="submit" class="btn btn-outline-danger">
+                      Favourite
+                    </button>
+                  </form>
 
           </ul>
           <% } %>

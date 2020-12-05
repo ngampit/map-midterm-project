@@ -16,11 +16,11 @@ const router = express.Router();
 module.exports = (helper) => {
 
   router.post("/", (req, res) => {
-    // const id = req.session && req.session.user_id?req.session.user_id:-1;
+    const id = req.session.user_id
 
-    // if (id === -1) {
-    //   return res.status(401).send('User/Password not authorized to access this page');
-    // }
+    if (!id) {
+      return res.status(401).send('User/Password not authorized to access this page');
+    }
     const data = {
       user_id: req.session.user_id,
       title: req.body.title,
@@ -43,11 +43,13 @@ module.exports = (helper) => {
 
 
   router.post("/:id/delete", (req, res) => {
-    // const id = req.session && req.session.user_id?req.session.user_id:-1;
+    const id = req.session.user_id
 
+    if (!id) {
+      return res.status(401).send('User/Password not authorized to access this page');
+    }
+    const mapId = req.params.id;
 
-  router.post("delete/:map_id", (req, res) => {
-    const mapId = req.params.map_id;
     return helper.deleteMap(mapId)
       .then(res.redirect("/"))
       .catch(err => {
@@ -78,10 +80,13 @@ module.exports = (helper) => {
       });
   })
 
-
-
   // this one will be in frontend on Ajax
   router.post("/:map_id/create", (req, res) => {
+    const id = req.session.user_id
+
+    if (!id) {
+      return res.status(401).send('User/Password not authorized to access this page');
+    }
     const data = {
       map_id: req.params.map_id,
       user_id: req.session.user_id,
@@ -90,6 +95,7 @@ module.exports = (helper) => {
       long: req.body.lng,
       description: "test Description"
     }
+
     return helper.addMarker(data)
 
       .then(data => {
@@ -105,7 +111,7 @@ module.exports = (helper) => {
   })
 
   router.post("/:map_id/delete/:markerId", (req, res) => {
-    const id = req.session && req.session.user_id?req.session.user_id:-1;
+    // const id = req.session && req.session.user_id?req.session.user_id:-1;
 
     // if (id === -1) {
     //   return res.status(401).send('User/Password not authorized to access this page');
@@ -125,33 +131,27 @@ module.exports = (helper) => {
 
 
   router.get("/:map_id", (req, res) => {
-    // const id = req.session && req.session.user_id?req.session.user_id:-1;
+    const id = req.session.user_id
 
-    // if (id === -1) {
-    //   return res.status(401).send('User/Password not authorized to access this page');
-    // }
+    if (!id) {
+      return res.status(401).send('User/Password not authorized to access this page');
+    }
     const map_id = req.params.map_id;
-    console.log("line 127", map_id)
     return helper.getMapByID(map_id)
       .then((data) => {
-        console.log("line 130", data);
-        return res.render('map');
 
-        // const tempVars = {
-        //   map_id: data.id,
-        //   lat: data.center_lat,
-        //   lng: data.center_long
-        // }
+        const tempVars = {
+          map_id: data.id,
+          lat: data.center_lat,
+          lng: data.center_long
+        }
 
-        // helper.getMarkersByMapId(map_id)
-        //   .then((markers) => {
-        //     tempVars["markers"] = markers
-        //     console.log(tempVars);
-        //     return res.render('map', tempVars)
-        //   })
-        //    res.send(tempVars);
-        //    console.log(tempVars);
-        // res.render('map', tempVars)
+        helper.getMarkersByMapId(map_id)
+          .then((markers) => {
+            tempVars["markers"] = markers
+            console.log(tempVars);
+            return res.render('map', tempVars)
+          })
       }).catch(err => {
         res
           .status(500)
@@ -187,17 +187,20 @@ module.exports = (helper) => {
 
   })
 
-
-  // edit marker func pending !!!!
-
-
-
   // favorite marker
-  router.post("/:map_id/favorite", (req, res) => {
-    const map_id = req.params.map_id;
+
+  router.post("/:id/favourite", (req, res) => {
+
+    const map_id = req.params.id;
     const user_id = req.session.user_id;
-    helper.markFavourite(map_id, user_id)
-      .then(res.send('maker favorite'))
+
+    if (!user_id) {
+      return res.status(401).send('User/Password not authorized to access this page');
+    }
+
+    return helper.markFavourite(map_id, user_id)
+      .then(res.redirect("/"))
+
       .catch(err => {
         res
           .status(500)
@@ -207,14 +210,16 @@ module.exports = (helper) => {
       });
   })
 
-
-
-
-  router.post("/:map_id/unfavorite", (req, res) => {
+  router.post("/:map_id/unfavourite", (req, res) => {
     const map_id = req.params.map_id;
     const user_id = req.session.user_id;
-    helper.unmarkFavourite(map_id, user_id)
-      .then(res.send('unfavorite marker'))
+
+    if (!user_id) {
+      return res.status(401).send('User/Password not authorized to access this page');
+    }
+    return helper.unmarkFavourite(map_id, user_id)
+      .then(res.redirect("/"))
+
       .catch(err => {
         res
           .status(500)
@@ -226,4 +231,4 @@ module.exports = (helper) => {
 
 
   return router;
-}
+  }
