@@ -94,15 +94,20 @@
 
         <% for (let entry of allMaps) { %>
           <ul>
-            <li><%=entry.map_id%></li>
-            <li><%=entry.map_title%></li>
-            <li><%=entry.map_description%></li>
-            <li><%=entry.map_creation%></li>
-            <form method="GET" action="/api/widgets/<%=entry.map_id%>">
+            <li><%=entry.id%></li>
+            <li><%=entry.title%></li>
+            <li><%=entry.description%></li>
+            <li><%=entry.created_at%></li>
+            <form method="GET" action="/api/widgets/<%=entry.id%>">
               <button name="get" type="submit" class="btn btn-outline-primary">
-                <%=entry.map_title%>
+                <%=entry.title%>
               </button>
               </form>
+              <form method="POST" action="/api/widgets/delete/<%=entry.id%>">
+                <button  class="btn btn-outline-danger">
+                    Delete
+                  </button>
+
 
           </ul>
           <% } %>
