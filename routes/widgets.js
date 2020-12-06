@@ -90,10 +90,10 @@ module.exports = (helper) => {
     const data = {
       map_id: req.params.map_id,
       user_id: req.session.user_id,
-      title: "title",
+      title: req.body.title,
       lat: req.body.lat,
       long: req.body.lng,
-      description: "test Description"
+      description: req.body.description
     }
 
     return helper.addMarker(data)
@@ -110,15 +110,16 @@ module.exports = (helper) => {
 
   })
 
-  router.post("/:map_id/delete/:markerId", (req, res) => {
+  router.post("/:map_id/delete/marker", (req, res) => {
     // const id = req.session && req.session.user_id?req.session.user_id:-1;
+    const mapId = req.params.map_id;
+    const data = {
+                  marker_id : req.body.markerId
 
-    // if (id === -1) {
-    //   return res.status(401).send('User/Password not authorized to access this page');
-    // }
-    const marker_id = req.params.markerId;
-    helper.deleteMarker(maker_id)
-      .then(res.send('maker deleted'))
+                 }
+
+    helper.deleteMarker(data)
+//      .then(res.send('maker deleted'))
       .catch(err => {
         res
           .status(500)
@@ -136,22 +137,24 @@ module.exports = (helper) => {
     if (!id) {
       return res.status(401).send('User/Password not authorized to access this page');
     }
+      return res.render('map')
+
+      .catch(err => {
+        res
+          .status(500)
+          .json({
+            error: err.message
+          });
+      });
+});
+
+
+  router.get("/:map_id/json", (req, res) => {
     const map_id = req.params.map_id;
+
     return helper.getMapByID(map_id)
       .then((data) => {
-
-        const tempVars = {
-          map_id: data.id,
-          lat: data.center_lat,
-          lng: data.center_long
-        }
-
-        helper.getMarkersByMapId(map_id)
-          .then((markers) => {
-            tempVars["markers"] = markers
-            console.log(tempVars);
-            return res.render('map', tempVars)
-          })
+        res.json(data)
       }).catch(err => {
         res
           .status(500)
@@ -165,7 +168,6 @@ module.exports = (helper) => {
   router.get("/:id/markers", (req, res) => {
 
     const map_id = req.params.id;
-    console.log("line 127", map_id)
     return helper.getMarkersByMapId(map_id)
       .then((data) => {
         const tempVars = {
@@ -173,9 +175,6 @@ module.exports = (helper) => {
           lat: data.center_lat,
           lng: data.center_long
         }
-        console.log(data)
-        //    res.send(tempVars);
-        //    console.log(tempVars);
         res.json(data)
       }).catch(err => {
         res
@@ -232,3 +231,4 @@ module.exports = (helper) => {
 
   return router;
   }
+
