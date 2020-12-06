@@ -73,7 +73,7 @@
         <div id="myCarousel" class="carousel slide" data-ride="carousel">
           <div class="carousel-inner row w-100 mx-auto">
             <div class="carousel-item col-md-3 active">
-              <div class="card" style="width: 25rem;">
+              <div class="card your-maps" style="width: 25rem;">
                 <div class="card-body">
                   <h2 class="card-title"><%=entry.title%></h2>
                   <h5 class="card-text"><%=entry.description%></h5>
@@ -109,7 +109,7 @@
         <div id="myCarousel" class="carousel slide" data-ride="carousel">
           <div class="carousel-inner row w-100 mx-auto">
             <div class="carousel-item col-md-3 active">
-              <div class="card" style="width: 25rem;">
+              <div class="card all-maps" style="width: 25rem;">
                 <div class="card-body">
                   <h2 class="card-title"><%=entry.title%></h2>
                   <h5 class="card-text"><%=entry.description%></h5>
@@ -137,7 +137,7 @@
       <h1 class="user-section-heading">Favourited Maps</h1>
       <div class="row my-maps">
         <% for (let entry of favouriteMaps) { %>
-        <div class="card" style="width: 25rem;">
+        <div class="card fav-maps" style="width: 25rem;">
           <div class="card-body">
             <h2 class="card-title"><%=entry.map_title%></h2>
             <h5 class="card-text"><%=entry.map_description%></h5>
@@ -187,6 +187,9 @@
   </main>
 
   <footer>
+    <div class= "footer">
+
+    </div>
   </footer>
 
 
