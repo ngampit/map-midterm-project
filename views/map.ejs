@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="/vendor/border-box.css" type="text/css" />
   <link rel="stylesheet" href="/styles/layout.css" type="text/css" />
   <link rel="stylesheet" href="/styles/nav.css" type="text/css" />
+  <link rel="stylesheet" href="/styles/info-window.scss" type="text/css" />
+
   <!-- Scripts -->
   <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
   <script defer
@@ -23,14 +25,15 @@
   <title>Wiki Map</title>
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,100&display=swap" rel="stylesheet">
   <!-- Font Awesome -->
   <script src="https://kit.fontawesome.com/fd87467771.js" crossorigin="anonymous"></script>
   <style type="text/css">
     /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
     #map {
-      height: 400px;
+      height: 100%;
+
     }
     /* Optional: Makes the sample page fill the window. */
     html,
@@ -39,54 +42,76 @@
       margin: 0;
       padding: 0;
     }
+
+
+    .gm-style-iw {
+  background-color: rgb(237, 28, 36);
+    border: 7px solid #36cee6;
+    border-radius: 10px;
+    box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
+    font-family: "Roboto" !important;
+    font-size: 25px;
+    font-weight: normal !important;
+    text-align: center;
+    top: 10px !important;
+    width: 350px !important;
+}
+
+  .gm-style-iw:hover {
+    border: 7px solid #17a2b8;
+    color: #36cee6;
+    background: #fff;
+  }
+  .remove-marker {
+    padding: 10px;
+  }
+
+  .info-window {
+    font-family: "Trebuchet MS";
+    padding: 100px;
+  }
+
+  .btn {
+    padding: 10px !important;
+    margin: 2px;
+  }
+
+  textarea {
+    /* padding: 3em; */
+    border-radius: 10px;
+  }
+
+  nav {
+    color: #17a2b8;
+    position: fixed;
+  }
+
+  .marker-info {
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+
+  }
   </style>
   <script>
-    // let markers = [];
-    let map;
-    let latitude = <%=lat%>;
-    let longitude = <%=lng%>;
-    let map_id = <%=map_id%>
-    // let markers = <%=markers%>
-    function initMap() {
-      map = new google.maps.Map(document.getElementById("map"), {
-        center: {
-          lat: latitude,
-          lng: longitude
-        },
-          zoom: 8,
-      });
-      // console.log("marker", markers)
-      // This event listener will call addMarker() when the map is clicked.
-      // for (let marker of markers) {
-      <% markers.map((marker) => { %>
-      new google.maps.Marker({
-      position: {lat: <%=marker.long%>, lng: <%=marker.lat%>},
-      map: map
-    });
-  <%})%>
-      map.addListener("click", (event) => {
-        console.log(event.latLng.lat())
-        console.log(event.latLng.lng())
-        addMarker(event.latLng);
-      });
-    // Adds a marker to the map and push to the array.
-    function addMarker(location) {
-      const marker = new google.maps.Marker({
-        position: location,
-        map: map,
-      });
-      $.ajax({
-        type: "POST",
-        url: `http://localhost:8080/api/widgets/${map_id}/create`,
-        data: {lat: location.lat(), lng: location.lng()},
-      });
-      markers.push(marker);
-      // console.log(markers)
-    }
-  }
+
   </script>
 </head>
 <body>
+  <nav class="navbar">
+    <a class="navbar-brand" href="/">
+      <img src="https://freeiconshop.com/wp-content/uploads/edd/location-map-flat.png" width="30" height="30"
+        class="d-inline-block align-top" alt="">
+      Mapper
+    </a>
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="">SAVE <span class="sr-only">(current)</span></a>
+      </li>
+      </ul>
+       <form class="form-inline" action="/logout" method="POST">
+            <label for="logout">Logout:</label>
+            <button type="submit" class="btn btn-danger">Logout</button></form>
+  </nav>
   <div id="map"></div>
   <div>
   </div>
