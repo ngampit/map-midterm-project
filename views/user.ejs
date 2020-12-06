@@ -16,6 +16,7 @@
   <!-- Scripts -->
   <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
   <script type="text/javascript" src="/scripts/app.js"></script>
+
   <script defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjwvQUlvnSLtKZlbDFKbFZoj2IriOF_XY&callback=initMap">
   </script>
@@ -34,235 +35,155 @@
 
 <body>
   <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Mapper</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">example1</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">example2</a>
-          </li>
-            <form class="form-inline" action="/logout" method="POST">
-              <label for="logout">Logout:</label>
-            <button type="submit" class="btn btn-primary">Logout</button></form>
-          <li>
-
-          </li>
-        </ul>
-      </div>
+    <nav class="navbar" style="background-color: #17a2b8;">
+      <a class="navbar-brand" href="#">
+        <img src="https://freeiconshop.com/wp-content/uploads/edd/location-map-flat.png" width="30" height="30"
+          class="d-inline-block align-top" alt="">
+        Mapper
+      </a>
+        <form class="form-inline" action="/logout" method="POST">
+          <button type="submit" class="btn btn-primary">Logout</button></form>
     </nav>
   </header>
 
   <main>
-    <section>
+    <section class="center" onmouseover="this.style.backgroundColor='#17a2b8'" onMouseOut="this.style.backgroundColor='#EEE'">
       <div>
         <h1>Create New Map</h1>
         <form action="/api/widgets/" method="POST">
           <div class="form-group">
             <label for="exampleFormControlInput1">Map Name</label>
-            <input name="title" type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter map name here">
+            <input name="title" type="text" class="form-control" id="exampleFormControlInput1"
+              placeholder="Enter map name here">
           </div>
           <div class="form-group">
             <label for="exampleFormControlTextarea1">Enter a map description</label>
-            <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
+            <textarea placeholder="Enter a description for your map" name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <input style="margin-top: 2em;" type="submit" name="submit" class="btn btn-info btn-md" value="submit">
           </div>
         </form>
         <!-- <button class="center">Create Map</button> -->
       </div>
     </section>
 
-    <!-- <section>
-      <% for (let entry of favouriteMaps) { %>
-        <ul>
-          <li><%=entry.map_id%></li>
-          <li><%=entry.map_title%></li>
-          <li><%=entry.map_description%></li>
-          <li><%=entry.map_creation%></li>
-
-          <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.map_id %>/unfavourite">
-            <button type="submit" class="btn btn-outline-danger">
-              Unfavourite
-              </button>
-            </form>
-        </ul>
-        <% } %>
-
-        <% for (let entry of allMaps) { %>
-          <ul>
-            <li><%=entry.id%></li>
-            <li><%=entry.title%></li>
-            <li><%=entry.description%></li>
-            <li><%=entry.created_at%></li>
-            <form method="GET" action="/api/widgets/<%=entry.id%>">
-              <button name="get" type="submit" class="btn btn-outline-primary">
-                <%=entry.title%>
-              </button>
-              </form>
-              <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.id %>/delete">
-                <button type="submit" class="btn btn-outline-danger">
-                    Delete
-                  </button>
-                </form>
-                <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.id %>/favourite">
-                  <button type="submit" class="btn btn-outline-danger">
-                      Favourite
+    <section onmouseover="this.style.backgroundColor='#17a2b8'" onMouseOut="this.style.backgroundColor='#EEE'" style="border-radius: 15px;">
+      <h1 class="user-section-heading">Your Maps</h1>
+      <div class="row my-maps">
+        <% for (let entry of userMaps) { %>
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner row w-100 mx-auto">
+            <div class="carousel-item col-md-3 active">
+              <div class="card" style="width: 25rem;">
+                <div class="card-body">
+                  <h2 class="card-title"><%=entry.title%></h2>
+                  <h5 class="card-text"><%=entry.description%></h5>
+                  <p><%=entry.created_at%></p>
+                  </form>
+                  <form method="GET" action="/api/widgets/<%=entry.id%>">
+                    <button name="get" type="submit" class="btn btn-outline-primary inline">
+                      <i class="fas fa-arrow-right"></i></button>
+                  </form>
+                  <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.id %>/delete">
+                    <button  class="btn btn-outline-danger inline">
+                      Delete
                     </button>
                   </form>
-
-          </ul>
-          <% } %>
-
-    </section> -->
-
-    <section style="background-color: #BABABA;">
-      <h1 class="user-section-heading">My Maps</h1>
-      <div class="row my-maps">
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="..." alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <form method="GET" action="">
-              <button name="get" type="button" value="delete" class="btn btn-outline-primary">
-                Go
-              </button>
-            </form>
-            <form method="POST" action="">
-              <button name="submit" type="submit" value="submit" class="btn btn-outline-success">
-                Edit
-              </button>
-            </form>
-            <form method="POST" action="">
-              <button name="Delete" type="delete" value="delete" class="btn btn-outline-danger">
-                Delete
-              </button>
-            </form>
+                  <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.id %>/favourite">
+                    <button type="submit" class="btn btn-outline-danger inline">
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="" alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="..." alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example sa to but.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
+        <% } %>
       </div>
     </section>
 
-
-    <section style="background-color: #AEBAB1;">
+    <section onmouseover="this.style.backgroundColor='#17a2b8'" onMouseOut="this.style.backgroundColor='#EEE'" style="border-radius: 15px;">
       <h1 class="user-section-heading">All Maps</h1>
       <div class="row my-maps">
         <% for (let entry of allMaps) { %>
-        <div class="card" style="width: 18rem;">
+        <div id="myCarousel" class="carousel slide" data-ride="carousel">
+          <div class="carousel-inner row w-100 mx-auto">
+            <div class="carousel-item col-md-3 active">
+              <div class="card" style="width: 25rem;">
+                <div class="card-body">
+                  <h2 class="card-title"><%=entry.title%></h2>
+                  <h5 class="card-text"><%=entry.description%></h5>
+                  <p><%=entry.created_at%></p>
+                  </form>
+                  <form method="GET" action="/api/widgets/<%=entry.id%>">
+                    <button name="get" type="submit" class="btn btn-outline-primary">
+                      <i class="fas fa-arrow-right"></i></button>
+                  </form>
+                  <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.id %>/favourite">
+                    <button type="submit" class="btn btn-outline-danger">
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </section>
+
+    <section onmouseover="this.style.backgroundColor='#17a2b8'" onMouseOut="this.style.backgroundColor='#EEE'"  style="border-radius: 15px;">
+      <h1 class="user-section-heading">Favourited Maps</h1>
+      <div class="row my-maps">
+        <% for (let entry of favouriteMaps) { %>
+        <div class="card" style="width: 25rem;">
           <div class="card-body">
-            <h2 class="card-title"><%=entry.title%></h2>
-            <h5 class="card-text"><%=entry.description%></h5>
-            <p><%=entry.created_at%></p>
-          </form>
-          <form method="GET" action="/api/widgets/<%=entry.id%>">
-            <button name="get" type="submit" class="btn btn-outline-primary">
-              <%=entry.title%>
-            </button>
+            <h2 class="card-title"><%=entry.map_title%></h2>
+            <h5 class="card-text"><%=entry.map_description%></h5>
+            <p><%=entry.map_creation%></p>
+            <form method="GET" action="/api/widgets/<%=entry.id%>">
+              <button name="get" type="submit" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-right"></i></button>
             </form>
-          <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.id %>/delete">
-            <button type="submit" class="btn btn-outline-danger">
-                Delete
+            <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.map_id %>/unfavourite">
+              <button type="submit" class="btn btn-outline-danger">
+                Unfavourite
               </button>
             </form>
-            <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.id %>/favourite">
-              <button type="submit" class="btn btn-outline-danger">
-                  Favourite
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </section>
+
+    <section onmouseover="this.style.backgroundColor='#17a2b8'" onMouseOut="this.style.backgroundColor='#EEE'" style="border-radius: 15px;">
+      <h1 class="user-section-heading">Contributions</h1>
+      <div class="row my-maps">
+        <% for (let entry of contributions) { %>
+        <div class="card" style="width: 25rem;">
+          <img class="card-img-top" src="..." alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title"><%=entry.title%></h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+              content.</p>
+              <form method="GET" action="/api/widgets/<%=entry.id%>">
+                <button name="get" type="submit" class="btn btn-outline-primary">
+                  <i class="fas fa-arrow-right"></i></button>
+              </form>
+              <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.map_id %>/unfavourite">
+                <button type="submit" class="btn btn-outline-danger">
+                  Unfavourite
                 </button>
               </form>
           </div>
         </div>
-        <% } %>
+      <% } %>
       </div>
     </section>
 
-    <section style="background-color: #BABABA;">
-      <h1 class="user-section-heading">Favourited Maps</h1>
-      <div class="row my-maps">
-        <% for (let entry of favouriteMaps) { %>
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="..." alt="Card image cap">
-          <div class="card-body">
-            <h2 class="card-title"><%=entry.map_title%></h2>
-            <h5 class="card-text"><%=entry.map_description%></h5>h5>
-            <p><%=entry.map_creation%></p>
-          <form method="POST" autocomplete="off" action="/api/widgets/<%= entry.map_id %>/unfavourite">
-            <button type="submit" class="btn btn-outline-danger">
-              Unfavourite
-              </button>
-            </form>
-          </div>
-        </div>
-        <% } %>
-      </div>
-    </section>
 
-    <section style="background-color: #AEBAB1;">
-      <h1 class="user-section-heading">Contributions</h1>
-      <div class="row my-maps">
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="..." alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <form method="GET" action="">
-              <button name="get" type="button" value="get" class="btn btn-outline-primary">
-                Go
-              </button>
-            </form>
-            <form method="POST" action="">
-              <button name="submit" type="submit" value="submit" class="btn btn-outline-warning">
-                Favourite
-              </button>
-            </form>
-          </div>
-        </div>
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="..." alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-              content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-        <div class="card" style="width: 18rem;">
-          <img class="card-img-top" src="..." alt="Card image cap">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example sa to but.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-    </section>
+
   </main>
 
   <footer>
@@ -272,4 +193,3 @@
 </body>
 
 </html>
-
