@@ -1,7 +1,4 @@
 
-
-
-
 module.exports = (pool) => {
   const helper = {};
 
@@ -14,6 +11,17 @@ const getAllMaps = function() {
   })
 }
 helper.getAllMaps = getAllMaps;
+
+const getMapsByUserId = function(user_id) {
+  const query = `select * from maps where user_id = $1 order by created_at desc limit 6;`
+
+  return pool.query(query, [user_id])
+  .then((res) =>{
+    return res.rows;
+  })
+
+}
+helper.getMapsByUserId = getMapsByUserId;
 
 const getFavouritesMaps = function(user_id) {
   const query = `select fav_user_maps.user_id, map_id, maps.title as map_title,maps.created_at as map_creation, maps.description as map_description from fav_user_maps join maps on maps.id = map_id where fav_user_maps.user_id = $1 order by maps.created_at desc limit 6;`
@@ -88,7 +96,6 @@ const addMarker = function(data) {
 
   return pool.query(query, [map_id, user_id, title, lat, long, description])
   .then((res) => {
-    console.log(res.rows[0]);
     return res.rows[0];
   })
   .catch(err => {
@@ -99,7 +106,14 @@ helper.addMarker = addMarker;
 
 
 
-const deleteMarker = function(marker_id) {
+const deleteMarker = function(data) {
+  const map_id = data.map_id;
+  const user_id = data.user_id;
+  const title = data.title;
+  const lat = data.lat;
+  const long = data.long;
+  const description = data.description;
+
   query = `DELETE FROM markers WHERE map_id = $1`;
 
   return pool.query(query, [marker_id])
@@ -139,5 +153,18 @@ const unmarkFavourite = function(map_id, user_id) {
 }
 helper.unmarkFavourite = unmarkFavourite;
 
-return helper;
+const mapsContribution = function(user_id) {
+
+  query = `select maps.* from maps join markers on maps.id = map_id where markers.user_id = $1 and maps.user_id <> $2 group by maps.id; `
+
+  return pool.query(query, [user_id, user_id])
+  .then((res) => {
+    return res.rows;
+  })
 }
+helper.mapsContribution = mapsContribution;
+
+
+  return helper;
+}
+
