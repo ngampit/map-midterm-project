@@ -52,6 +52,7 @@ nav {
 
 .button {
   display: inline;
+  margin-top: 2em;
 }
 
 .my-maps {
@@ -72,10 +73,31 @@ main {
 }
 
 .center {
-  display: block;
   margin: auto;
+  padding: 10px;
+  text-align: center;
+  border-radius: 15px;
+}
+
+.card {
+  border-radius: 33px;
+  -webkit-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+
+.card:hover {
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
 }
 
 footer {
   height: 100px;
+}
+
+p {
+  font-size: 10px;
+}
+
+section:hover h1 {
+  color: white;
 }
