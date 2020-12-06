@@ -67,6 +67,7 @@ nav {
 // Button styling
 .button {
   display: inline;
+  margin-top: 2em;
 }
 
 
@@ -89,8 +90,19 @@ main {
 }
 
 .center {               // centering buttons on user page
-  display: block;
   margin: auto;
+  padding: 10px;
+  text-align: center;
+  border-radius: 15px;
+}
+
+.card {
+  border-radius: 33px;
+  transition: all .2s ease-in-out;
+}
+
+.card:hover {
+  transform: scale(1.1);
 }
 
 footer {
@@ -100,3 +112,10 @@ footer {
 p {
   font-size: 10px;
 }
+
+section:hover {
+  h1 {
+    color: white;
+  }
+}
+
