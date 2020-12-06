@@ -98,11 +98,18 @@ main {
 
 .card {
   border-radius: 33px;
-  transition: all .2s ease-in-out;
+  box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+  transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+padding: 14px 80px 18px 36px;
+cursor: pointer;
 }
 
 .card:hover {
   transform: scale(1.1);
+  box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+      transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+  padding: 14px 80px 18px 36px;
+  cursor: pointer;
 }
 
 footer {
@@ -119,3 +126,31 @@ section:hover {
   }
 }
 
+.your-maps {
+  background-image: url(https://ionicframework.com/img/getting-started/ionic-native-card.png);
+  background-repeat: no-repeat;
+  background-size: 80px;
+  background-position: right;
+
+}
+
+
+.fav-maps {
+  background-image: url(https://ionicframework.com/img/getting-started/components-card.png);
+  background-repeat: no-repeat;
+  background-size: 80px;
+  background-position: right;
+}
+
+
+.all-maps {
+  background-image: url(https://ionicframework.com/img/getting-started/theming-card.png);
+  background-repeat: no-repeat;
+  background-size: 80px;
+  background-position: right;
+}
+
+.footer {
+  height: 100px;
+  color: black !important;
+}
