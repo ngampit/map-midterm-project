@@ -100,26 +100,30 @@ app.get("/", (req, res) => {
   }
   return helper.getFavouritesMaps(id)
   .then((favouriteMaps)=>{
-    console.log('this is the favouritesMaps', favouriteMaps)
 
-
-
-    const tempVars = {
+      const tempVars = {
       favouriteMaps
-
-   }
-   console.log(tempVars)
+    }
    helper.getAllMaps()
-   .then((allMaps) => {
-    tempVars["allMaps"] = allMaps
-    return res.render('user', tempVars)
-   })
-
-  }).catch(err => {
-    return res
+    .then((allMaps) => {
+      tempVars["allMaps"] = allMaps
+      helper.getMapsByUserId(id)
+        .then((userMaps) => {
+          tempVars["userMaps"] = userMaps
+          helper.mapsContribution(id)
+            .then((contributions) => {
+              tempVars["contributions"] = contributions
+              console.log('this is the new tempVars!!!!', tempVars)
+              return res.render('user', tempVars)
+            })
+        })
+      })
+    })
+    .catch(err => {
+      return res
       .status(500)
       .json({ error: err.message });
-  });
+    });
   })
 
 
@@ -165,3 +169,4 @@ app.post("/logout", (req,res) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
 });
+
