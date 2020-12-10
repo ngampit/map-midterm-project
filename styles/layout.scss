@@ -83,6 +83,7 @@ nav {
 .user-section-heading { // styles section headers in users pages3
   text-align: center;
   padding-top: 1em;
+  text-decoration: underline;
 }
 
 main {
@@ -153,4 +154,17 @@ section:hover {
 .footer {
   height: 100px;
   color: black !important;
+}
+
+.cont-maps {
+  background-image: url(https://ionicframework.com/img/getting-started/ionic-native-card.png);
+  background-repeat: no-repeat;
+  background-size: 80px;
+  background-position: right;
+
+}
+
+
+section {
+
 }
