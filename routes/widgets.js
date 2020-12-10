@@ -24,8 +24,8 @@ module.exports = (helper) => {
     const data = {
       user_id: req.session.user_id,
       title: req.body.title,
-      center_lat: 43.70011,
-      center_long: -79.4163,
+      center_lat: 49.26071961615915,
+      center_long: -123.14217184389814,
       description: req.body.description
     }
     return helper.createNewMap(data)
