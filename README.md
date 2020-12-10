@@ -1,6 +1,9 @@
 LHL Node Skeleton
 =========
 
+!["GIF of creating a new marker and then deleting it"](https://media0.giphy.com/media/fOzJ4eLfAH7wgcb0Xr/giphy.gif)
+
+
 ## Project Setup
 
 The following steps are only for _one_ of the group members to perform.
