@@ -15,7 +15,7 @@ Users can create and delete custom markers to there own or other users maps
 
 Users can Favourite, and Contribute to other user's maps
 
-!["GIF of Favouriting / Editing map"](https://github.com/ngampit/map-midterm-project/blob/master/Docs/Create-Delete-Marker.gif?raw=true)
+!["GIF of Favouriting / Editing map"](https://github.com/ngampit/map-midterm-project/blob/master/Docs/Favourite_Delete%20Map.gif?raw=true)
 
 
 ## Getting Started
