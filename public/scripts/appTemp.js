@@ -187,7 +187,7 @@ function initMap() {
     center: {
       lat: latitude,
       lng: longitude,
-      zoom: 13
+      zoom: 20
     },
     zoom: 8,
   });
